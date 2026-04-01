@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Convergence Project — Civic Research Library</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-l: #E8C96A;
+  --olive: #6B7C47; --tan: #C2A87E;
+  --brown: #5C3D2E; --black: #0D0D0D;
+  --b2: #111111; --b3: #181818;
+  --cream: #F0EAD6;
+}
+
+/* ── RESET ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Raleway', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── AMBIENT ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+.glow {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+}
+.glow-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%); top: -200px; left: -200px; }
+.glow-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(107,124,71,0.05) 0%, transparent 70%); bottom: -150px; right: -150px; }
+
+/* ── TOP NAV ── */
+.top-nav {
+  position: relative; z-index: 10;
+  display: flex; justify-content: flex-end; align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.nav-link {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 8px 18px;
+  transition: all .2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-link:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: var(--gold);
+}
+.nav-link .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── WRAPPER ── */
+.wrapper {
+  position: relative; z-index: 1;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 80px 24px 120px;
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+  animation: fadeUp .8s ease both;
+}
+.header-eye {
+  font-size: 10px; letter-spacing: 6px; text-transform: uppercase;
+  color: var(--olive); margin-bottom: 18px; display: block;
+}
+.header-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(40px, 8vw, 80px);
+  font-weight: 900; color: var(--cream);
+  line-height: .9; letter-spacing: -1px;
+}
+.header-title em {
+  display: block; color: var(--gold);
+  font-style: normal; font-size: .5em;
+  letter-spacing: 4px; margin-top: 14px;
+}
+.header-rule {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 24px auto;
+}
+.header-desc {
+  font-family: 'Crimson Text', serif; font-style: italic;
+  font-size: clamp(15px, 2.2vw, 19px);
+  color: var(--tan); max-width: 580px;
+  margin: 0 auto; line-height: 1.75;
+}
+.header-desc strong { color: var(--gold-l); font-style: normal; }
+
+/* ── SERIES SECTION ── */
+.series {
+  margin-bottom: 64px;
+  animation: fadeUp .7s ease both;
+}
+.series:nth-child(2) { animation-delay: .1s; }
+.series:nth-child(3) { animation-delay: .2s; }
+.series:nth-child(4) { animation-delay: .3s; }
+
+.series-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 24px;
+}
+.series-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, #2a2a2a);
+}
+.series-line.r { background: linear-gradient(90deg, #2a2a2a, transparent); }
+.series-label {
+  text-align: center;
+  white-space: nowrap;
+}
+.series-vol {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: #444; display: block; margin-bottom: 4px;
+}
+.series-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(14px, 2.5vw, 20px);
+  font-weight: 700; color: var(--cream);
+  display: block;
+}
+
+/* ── DECK GRID ── */
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* ── DECK CARD ── */
+.deck-card {
+  position: relative;
+  background: var(--b2);
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  padding: 28px 24px 22px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.deck-card:hover { transform: translateY(-4px); }
+
+/* color bar top */
+.deck-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+
+/* bg deck number */
+.deck-card .bg-num {
+  position: absolute; bottom: -12px; right: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 110px; font-weight: 900;
+  opacity: .03; line-height: 1;
+  pointer-events: none; user-select: none;
+  color: var(--cream);
+}
+
+.deck-num {
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.deck-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(17px, 2.5vw, 22px);
+  font-weight: 700; color: var(--gold);
+  line-height: 1.15; margin-bottom: 8px;
+}
+.deck-sub {
+  font-family: 'Crimson Text', serif; font-style: italic;
+  font-size: 13px; color: var(--tan);
+  line-height: 1.55; margin-bottom: 16px;
+  flex: 1;
+}
+.deck-tags {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px;
+}
+.tag {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 2px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #555;
+}
+.deck-foot {
+  border-top: 1px solid #1e1e1e;
+  padding-top: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.deck-stat { }
+.stat-n {
+  font-family: 'Cinzel', serif; font-size: 16px;
+  color: var(--cream); display: block; line-height: 1;
+}
+.stat-l {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: #444; margin-top: 3px; display: block;
+}
+.open-btn {
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 9px 16px; border-radius: 2px; border: 1px solid;
+  transition: all .2s; cursor: pointer; text-decoration: none;
+  white-space: nowrap;
+}
+.arrow { font-size: 13px; transition: transform .2s; }
+.deck-card:hover .arrow { transform: translateX(3px); }
+
+/* ── COMING SOON CARD ── */
+.deck-card.soon {
+  opacity: .4; pointer-events: none;
+  border-style: dashed;
+}
+.deck-card.soon::before { display: none; }
+.soon-label {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: #444; text-align: center; margin-top: auto;
+  padding-top: 16px;
+}
+
+/* ── ADD NEW CARD ── */
+.deck-card.add-new {
+  border: 1px dashed #2a2a2a;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 10px;
+  min-height: 200px; cursor: default;
+  opacity: .35;
+}
+.add-new::before { display: none; }
+.add-icon { font-size: 32px; color: #333; }
+.add-text {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase; color: #444;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  text-align: center; margin-top: 72px;
+  animation: fadeUp .8s .5s ease both;
+}
+.footer-quote {
+  font-family: 'Crimson Text', serif; font-style: italic;
+  font-size: clamp(14px, 2vw, 17px);
+  color: #444; max-width: 480px; margin: 0 auto 24px;
+  line-height: 1.7;
+}
+.footer-quote strong { color: var(--olive); font-style: normal; }
+.footer-buttons {
+  display: flex; justify-content: center; align-items: center;
+  gap: 16px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.footer-cta {
+  display: inline-block; padding: 12px 32px;
+  border: 1px solid var(--gold); border-radius: 2px;
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  transition: all .2s;
+}
+.footer-cta:hover { background: var(--gold); color: var(--black); }
+.footer-cta.secondary {
+  border-color: rgba(201,168,76,0.35);
+  color: rgba(201,168,76,0.6);
+}
+.footer-cta.secondary:hover {
+  background: rgba(201,168,76,0.1);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.footer-small {
+  margin-top: 20px; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase; color: #2a2a2a;
+}
+
+/* ── ANIMATION ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .wrapper { padding: 56px 16px 100px; }
+  .deck-grid { grid-template-columns: 1fr; }
+  .series-header { gap: 10px; }
+  .top-nav { padding: 16px 20px; }
+}
+
+/* ── RECOMMENDED PATHS ── */
+.recommended-section { margin-bottom: 64px; }
+.paths-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.path-block { background: var(--b2); border: 1px solid #1e1e1e; padding: 22px 20px; transition: border-color .3s; }
+.path-block:hover { border-color: rgba(201,168,76,0.3); }
+.path-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.path-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
+.path-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--cream); letter-spacing: .02em; margin-bottom: 4px; }
+.path-desc { font-family: 'Crimson Text', serif; font-style: italic; font-size: 12px; color: #555; line-height: 1.4; }
+.path-cards { display: flex; flex-direction: column; gap: 6px; }
+.path-card { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid #1e1e1e; text-decoration: none; transition: border-color .2s, background .2s; }
+.path-card:hover { background: rgba(255,255,255,.02); }
+.path-card-id { font-family: 'Cinzel', serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; min-width: 24px; }
+.path-card-label { font-family: 'Raleway', sans-serif; font-size: 11px; color: rgba(240,234,214,.6); letter-spacing: .05em; }
+
+/* ── LARGE SCREEN SCALING ── */
+@media (min-width: 1400px) {
+  .wrapper { max-width: 1300px; }
+  .deck-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+}
+
+@media (min-width: 1800px) {
+  .wrapper { max-width: 1600px; }
+  .deck-grid { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+  .header-desc { font-size: 22px; }
+  .deck-sub { font-size: 15px; }
+}
+
+@media (min-width: 2400px) {
+  .wrapper { max-width: 2000px; }
+  .deck-grid { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+  .header-desc { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<!-- ── TOP NAV ── -->
+<nav class="top-nav">
+  <a class="nav-link" href="updates.html">
+    <span class="dot"></span>
+    Updates &amp; Dispatches
+  </a>
+  <a class="nav-link" href="sources.html" style="margin-left:12px;border-color:rgba(201,168,76,0.2);color:rgba(201,168,76,0.5);">
+    Source Bank
+  </a>
+</nav>
+
+<div class="wrapper">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <span class="header-eye">A Spoken Space × Off Mic — Civic Research Library</span>
+    <h1 class="header-title">
+      The Convergence<br>Project
+      <em>Receipts &amp; Perspective</em>
+    </h1>
+    <div class="header-rule"></div>
+    <p class="header-desc">
+      An expanding library of data-backed, community-focused research.<br>
+      <strong>No ads. No algorithms. No filler.</strong><br>
+      Each deck opens in its own window — swipeable on mobile, keyboard-navigable on desktop.<br>
+      New decks are added as the research grows.
+    </p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SERIES ARE RENDERED FROM DATA BELOW BY JAVASCRIPT -->
+  <!-- TO ADD A NEW DECK: add one object to DECKS array  -->
+  <!-- TO ADD A NEW SERIES: add one object to SERIES     -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="library"></div>
+
+  <!-- ── FOOTER ── -->
+  <div class="site-footer">
+    <p class="footer-quote">
+      "The research is the poem before the poem.<br>
+      <strong>Every deck is a receipt. Every slide is a reckoning.</strong>"<br>
+      — Ms. JuruDaWise / Impact Poet
+    </p>
+    <div class="footer-buttons">
+      <a class="footer-cta" href="https://impactpoet.carrd.co" target="_blank">
+        Enter the Space — impactpoet.carrd.co
+      </a>
+      <a class="footer-cta secondary" href="updates.html">
+        Updates &amp; Dispatches →
+      </a>
+      <a class="footer-cta secondary" href="sources.html">
+        Source Bucket →
+      </a>
+    </div>
+    <p class="footer-small">Off Mic Podcast · A Spoken Space · EE9 LLC</p>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// TO ADD A NEW DECK — just add an object to the DECKS array below.
+// Fields:
+//   id         — deck number (string, e.g. "08")
+//   series     — must match a series id in SERIES array
+//   file       — filename (must be in the same folder as index.html)
+//   color      — accent color for this deck
+//   label      — "Deck 01 — Topic Name"
+//   title      — main title (use \n for line break)
+//   subtitle   — italic description shown on card
+//   tags       — array of tag strings
+//   stat       — { num, label } for the stat shown in footer
+//
+// TO ADD A NEW SERIES — add an object to the SERIES array below.
+//   id    — unique key
+//   vol   — e.g. "Research Series · Vol. 4"
+//   name  — displayed series title
+// ═══════════════════════════════════════════════════════════════
+
+const SERIES = [
+  {
+    id: 'convergence',
+    vol: 'The Convergence — Research Series · Vol. 1',
+    name: 'Water · Sun · Survival · The Root'
+  },
+  {
+    id: 'power',
+    vol: 'Gov & Corps — Research Series · Vol. 2',
+    name: 'Politics · Technology · Surveillance'
+  },
+  {
+    id: 'peace',
+    vol: 'Peace & War on The American People — Research Series · Vol. 3',
+    name: 'Children · Men · Women · The Family Unit'
+  },
+  {
+    id: 'education',
+    vol: 'American Education System Attacked — Research Series · Vol. 4',
+    name: 'Arts · Music · History · Civic Knowledge'
+  }
+  // Add future series here ↓
+  // { id: 'medicine', vol: 'American Medicine: The Good, The Bad & The Ugly — Vol. 5', name: 'Healthcare · Pharma · Access · Reform' }
+];
+
+const DECKS = [
+  // ── SERIES 1: THE CONVERGENCE ──────────────────────────────
+  {
+    id: '01', series: 'convergence',
+    file: 'deck1-water-energy.html',
+    color: '#4A90C4',
+    label: 'Deck 01 — Water & Energy',
+    title: 'Thirst &\nPower',
+    subtitle: 'AI data centers are drinking your water and spiking your electric bill. The receipts are here.',
+    tags: ['AI Infrastructure', 'Energy Crisis', 'Water Rights', 'Big Tech'],
+    stat: { num: '$380B', label: 'Tech spent in one year' },
+    related: ['04', '05', '07']
+  },
+  {
+    id: '02', series: 'convergence',
+    file: 'deck2-space-weather.html',
+    color: '#9B6FD0',
+    label: 'Deck 02 — Space Weather',
+    title: 'The Sun\nKnows',
+    subtitle: 'Peer-reviewed research links solar storms to heart attacks, depression spikes, and social unrest. We\'re at solar maximum right now.',
+    tags: ['Solar Cycle 25', 'Geomagnetic Health', 'Schumann Resonance', 'IYKYK'],
+    stat: { num: '+52%', label: 'Stroke risk in severe storms' },
+    related: ['01', '03', '08']
+  },
+  {
+    id: '03', series: 'convergence',
+    file: 'deck3-basic-needs.html',
+    color: '#3DB5A5',
+    label: 'Deck 03 — Basic Needs',
+    title: 'The Bare\nMinimum',
+    subtitle: 'Food. Water. Shelter. All three are being stripped from millions of Americans at once — by design, by policy, and by neglect.',
+    tags: ['Food Insecurity', 'Housing Crisis', 'SNAP Cuts', 'Water Safety'],
+    stat: { num: '47.4M', label: 'Food insecure Americans' },
+    related: ['04', '09', '10']
+  },
+  {
+    id: '04', series: 'convergence',
+    file: 'deck4-the-root.html',
+    color: '#E8952A',
+    label: 'Deck 04 — The Connection',
+    title: 'The\nRoot',
+    subtitle: 'The systems failing us are not separate. They share the same root — and the same owners. This is the deck that ties it all together.',
+    tags: ['Corporate Consolidation', 'BlackRock / Vanguard', 'Historical Precedent', 'Solutions'],
+    stat: { num: '88%', label: 'S&P 500 owned by Big 3' },
+    related: ['05', '07', '12']
+  },
+
+  // ── SERIES 2: GOV & CORPS ──────────────────────────────────
+  {
+    id: '05', series: 'power',
+    file: 'deck5-wars-and-corps.html',
+    color: '#C0392B',
+    label: 'Deck 05 — Gov & Corps',
+    title: 'Gov\n& Corps',
+    subtitle: 'They wrote the blueprint. They staffed the government. They signed the orders. 53% of a 920-page takeover — in 12 months.',
+    tags: ['Project 2025', 'Corporate Capture', 'Private Equity', 'Military Industrial'],
+    stat: { num: '53%', label: 'Of P2025 already implemented' },
+    related: ['04', '07', '12']
+  },
+  {
+    id: '06', series: 'power',
+    file: 'deck6-social-experiment.html',
+    color: '#D4A017',
+    label: 'Deck 06 — Social Media & AI',
+    title: 'The Social\nExperiment',
+    subtitle: 'They designed addiction. They measured the harm. They chose profit. The data on what social media and AI are doing to us is peer-reviewed and damning.',
+    tags: ['Algorithms', 'Mental Health', 'Deepfakes', 'Scam Epidemic'],
+    stat: { num: '$16.6B', label: 'Online fraud losses in 2024' },
+    related: ['08', '09', '11']
+  },
+  {
+    id: '07', series: 'power',
+    file: 'deck7-surveillance-state.html',
+    color: '#4A7FA5',
+    label: 'Deck 07 — Surveillance & Power',
+    title: 'The Surveillance\nState',
+    subtitle: 'The infrastructure was built before Trump. He\'s just using it more openly. Data brokers. Palantir. DOGE. Section 702. Who really rules America.',
+    tags: ['Palantir', 'Data Brokers', 'DOGE', 'American Dream'],
+    stat: { num: '17%', label: 'Americans trust federal gov.' },
+    related: ['05', '04', '12']
+  },
+
+  // ── SERIES 3: PEACE & WAR ON THE AMERICAN PEOPLE ──────────
+  {
+    id: '08', series: 'peace',
+    file: 'deck8-war-on-children.html',
+    color: '#C0392B',
+    label: 'Deck 08 — War on Children',
+    title: 'The Next\nGeneration',
+    subtitle: 'Autism up 160x. Youth suicide +57%. 62% of kids\' calories from ultra-processed food. 36M exploitation reports. A generation-wide systems failure — in data.',
+    tags: ['Mental Health', 'Education', 'Food & Chemicals', 'Screen Time', 'Child Safety'],
+    stat: { num: '1 in 31', label: 'Children diagnosed with autism (CDC 2022)' },
+    related: ['11', '09', '03']
+  },
+  {
+    id: '09', series: 'peace',
+    file: 'deck9-war-on-men.html',
+    color: '#2E86AB',
+    label: 'Deck 09 — War on Men',
+    title: 'The Silent\nCrisis',
+    subtitle: 'Men are 80% of suicides, 42% of college degrees, and disappearing from the workforce. The data on what\'s happening — and why it matters for everyone.',
+    tags: ['Suicide', 'Education Gap', 'Manufacturing', 'Fatherlessness', 'Loneliness'],
+    stat: { num: '3.8x', label: 'Male suicide rate vs. female — 100 men/day' },
+    related: ['10', '12', '08']
+  },
+  {
+    id: '10', series: 'peace',
+    file: 'deck10-war-on-women.html',
+    color: '#B03060',
+    label: 'Deck 10 — War on Women',
+    title: 'The Persistent\nWeight',
+    subtitle: 'Pay gap widening. Maternal mortality 3x peer nations. 70% of female homicides in wealthy countries happen here. Progress is real — and so are the persistent harms.',
+    tags: ['Wage Gap', 'Maternal Mortality', 'Post-Dobbs', 'Femicide', 'Poverty'],
+    stat: { num: '70%', label: 'of female homicides in wealthy nations happen in the U.S.' },
+    related: ['09', '12', '03']
+  },
+  {
+    id: '12', series: 'peace',
+    file: 'deck12-family-unit.html',
+    color: '#D4780A',
+    label: 'Deck 12 — The American Family Unit',
+    title: 'Who Gets to\nDefine Family?',
+    subtitle: 'Project 2025 would restructure policy around a family model that describes 5–7% of households. Here\'s what American families actually look like — and what the data says makes them work.',
+    tags: ['Project 2025', 'Manosphere', 'Single Parents', 'Platonic Co-Parenting', 'Childfree'],
+    stat: { num: '36th', label: 'of 38 wealthy nations in child wellbeing — policy, not structure, is the variable' },
+    related: ['09', '10', '05']
+  },
+
+  // ── SERIES 4: AMERICAN EDUCATION SYSTEM ATTACKED ──────────
+  {
+    id: '11', series: 'education',
+    file: 'deck11-music-arts-history.html',
+    color: '#2E8B6E',
+    label: 'Deck 11 — Music, Arts & History',
+    title: 'Why These\nPrograms Matter',
+    subtitle: 'A $1.2T economic engine being defunded from below. 23,000 book bans. Only 36% can pass the civics test. The data on what we lose when we cut arts and history.',
+    tags: ['Arts Education', 'Civic Knowledge', 'Book Bans', 'Brain Development', 'Equity'],
+    stat: { num: '$1.2T', label: 'Arts GDP contribution — growing 2x faster than overall economy' },
+    related: ['08', '12', '07']
+  }
+
+  // ── ADD NEW DECKS HERE ↓ ───────────────────────────────────
+  // {
+  //   id: '13', series: 'education',
+  //   file: 'deck13-topic.html',
+  //   color: '#hex',
+  //   label: 'Deck 13 — Topic',
+  //   title: 'Your\nTitle',
+  //   subtitle: 'Description.',
+  //   tags: ['Tag1', 'Tag2'],
+  //   stat: { num: 'X', label: 'stat label' },
+  //   related: ['11', '08']
+  // },
+];
+
+// ── RENDER ──────────────────────────────────────────────────
+function nl(str) { return str.replace(/\n/g, '<br>'); }
+
+function buildCard(deck) {
+  const tagsHTML = deck.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  return `
+    <a class="deck-card" href="${deck.file}" target="_blank"
+      onmouseenter="this.style.borderColor='${deck.color}44';this.style.boxShadow='0 16px 48px ${deck.color}14';"
+      onmouseleave="this.style.borderColor='#1e1e1e';this.style.boxShadow='none';">
+      <div class="bg-num">${deck.id}</div>
+      <style>
+        a[href="${deck.file}"]::before { background: ${deck.color}; }
+        a[href="${deck.file}"] .deck-num { color: ${deck.color}; }
+        a[href="${deck.file}"] .open-btn { border-color: ${deck.color}; color: ${deck.color}; }
+        a[href="${deck.file}"]:hover .open-btn { background: ${deck.color}; color: #0D0D0D; }
+      </style>
+      <p class="deck-num">${deck.label}</p>
+      <h2 class="deck-title">${nl(deck.title)}</h2>
+      <p class="deck-sub">${deck.subtitle}</p>
+      <div class="deck-tags">${tagsHTML}</div>
+      <div class="deck-foot">
+        <div class="deck-stat">
+          <span class="stat-n">${deck.stat.num}</span>
+          <span class="stat-l">${deck.stat.label}</span>
+        </div>
+        <span class="open-btn">Open <span class="arrow">→</span></span>
+      </div>
+    </a>`;
+}
+
+function buildSeries(series, decks) {
+  const cards = decks.map(buildCard).join('');
+  return `
+    <div class="series">
+      <div class="series-header">
+        <div class="series-line"></div>
+        <div class="series-label">
+          <span class="series-vol">${series.vol}</span>
+          <span class="series-name">${series.name}</span>
+        </div>
+        <div class="series-line r"></div>
+      </div>
+      <div class="deck-grid">${cards}</div>
+    </div>`;
+}
+
+// ── BUILD RECOMMENDED READING PATHS (auto-updates as decks are added) ──
+function buildRecommendedPaths() {
+  const PATHS = [
+    {
+      title: 'New Here? Start With These',
+      icon: '📍',
+      desc: 'Best first-time entry points into the library.',
+      ids: ['04', '03', '05']
+    },
+    {
+      title: 'Follow the Money',
+      icon: '💰',
+      desc: 'Who owns what, who profits, and how power concentrates.',
+      ids: ['04', '05', '07']
+    },
+    {
+      title: 'For Parents & Educators',
+      icon: '🏫',
+      desc: 'The data every adult raising or teaching children needs to see.',
+      ids: ['08', '11', '12']
+    },
+    {
+      title: 'The Gender Divide',
+      icon: '⚖️',
+      desc: 'Two sides of the same structural failure — read together.',
+      ids: ['09', '10', '12']
+    },
+    {
+      title: 'How Did We Get Here?',
+      icon: '🧵',
+      desc: 'The historical thread that connects every crisis in this library.',
+      ids: ['04', '01', '05']
+    },
+    {
+      title: 'For the Skeptic',
+      icon: '🔬',
+      desc: 'The most rigorously sourced decks — bring your fact-checkers.',
+      ids: ['10', '08', '11']
+    }
+  ];
+
+  const deckMap = {};
+  DECKS.forEach(d => { deckMap[d.id] = d; });
+
+  const pathsHTML = PATHS.map(path => {
+    const cards = path.ids
+      .map(id => deckMap[id])
+      .filter(Boolean)
+      .map(d => `
+        <a href="${d.file}" target="_blank" class="path-card"
+          onmouseenter="this.style.borderColor='${d.color}66';"
+          onmouseleave="this.style.borderColor='#1e1e1e';">
+          <span class="path-card-id" style="color:${d.color}">${d.id}</span>
+          <span class="path-card-label">${d.label.replace('Deck ' + d.id + ' — ', '')}</span>
+        </a>`).join('');
+
+    return `
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-icon">${path.icon}</span>
+          <div>
+            <p class="path-title">${path.title}</p>
+            <p class="path-desc">${path.desc}</p>
+          </div>
+        </div>
+        <div class="path-cards">${cards}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="recommended-section">
+      <div class="series-header" style="margin-bottom:28px;">
+        <div class="series-line"></div>
+        <div class="series-label">
+          <span class="series-vol">Suggested Reading Paths — Updates as the library grows</span>
+          <span class="series-name">Where to start · How to navigate</span>
+        </div>
+        <div class="series-line r"></div>
+      </div>
+      <div class="paths-grid">${pathsHTML}</div>
+    </div>`;
+}
+
+const library = document.getElementById('library');
+SERIES.forEach(s => {
+  const seriesDecks = DECKS.filter(d => d.series === s.id);
+  if (seriesDecks.length > 0) {
+    library.innerHTML += buildSeries(s, seriesDecks);
+  }
+});
+
+// ── RECOMMENDED READING PATHS ──────────────────────────────
+try {
+  var PATHS = [
+    { title: 'New Here? Start With These', icon: '📍', desc: 'Best first-time entry points into the library.', ids: ['04','03','05'] },
+    { title: 'Follow the Money', icon: '💰', desc: 'Who owns what, who profits, and how power concentrates.', ids: ['04','05','07'] },
+    { title: 'For Parents & Educators', icon: '🏫', desc: 'The data every adult raising or teaching children needs to see.', ids: ['08','11','12'] },
+    { title: 'The Gender Divide', icon: '⚖️', desc: 'Two sides of the same structural failure — read together.', ids: ['09','10','12'] },
+    { title: 'How Did We Get Here?', icon: '🧵', desc: 'The historical thread that connects every crisis in this library.', ids: ['04','01','05'] },
+    { title: 'For the Skeptic', icon: '🔬', desc: 'The most rigorously sourced decks — bring your fact-checkers.', ids: ['10','08','11'] }
+  ];
+
+  var deckMap = {};
+  DECKS.forEach(function(d) { deckMap[d.id] = d; });
+
+  var pathsHTML = '';
+  PATHS.forEach(function(path) {
+    var cardLinks = '';
+    path.ids.forEach(function(id) {
+      var d = deckMap[id];
+      if (!d) return;
+      var shortLabel = d.label.replace('Deck ' + d.id + ' \u2014 ', '');
+      cardLinks += '<a href="' + d.file + '" target="_blank" class="path-card" style="border-color:#1e1e1e;">' +
+        '<span class="path-card-id" style="color:' + d.color + '">' + d.id + '</span>' +
+        '<span class="path-card-label">' + shortLabel + '</span>' +
+        '</a>';
+    });
+    pathsHTML += '<div class="path-block">' +
+      '<div class="path-header">' +
+        '<span class="path-icon">' + path.icon + '</span>' +
+        '<div><p class="path-title">' + path.title + '</p>' +
+        '<p class="path-desc">' + path.desc + '</p></div>' +
+      '</div>' +
+      '<div class="path-cards">' + cardLinks + '</div>' +
+    '</div>';
+  });
+
+  var recSection = document.createElement('div');
+  recSection.className = 'series';
+  recSection.innerHTML =
+    '<div class="series-header">' +
+      '<div class="series-line"></div>' +
+      '<div class="series-label">' +
+        '<span class="series-vol">Suggested Reading Paths \u2014 Updates as the library grows</span>' +
+        '<span class="series-name">Where to start \u00b7 How to navigate</span>' +
+      '</div>' +
+      '<div class="series-line r"></div>' +
+    '</div>' +
+    '<div class="paths-grid">' + pathsHTML + '</div>';
+  library.appendChild(recSection);
+} catch(e) {
+  console.warn('Reading paths failed:', e);
+}
+</script>
+</body>
+</html>

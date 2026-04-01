@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <!-- Main sphere gradient - deep black with subtle warmth -->
+    <radialGradient id="sphere" cx="38%" cy="32%" r="65%" fx="38%" fy="32%">
+      <stop offset="0%"   stop-color="#4a4a4a"/>
+      <stop offset="30%"  stop-color="#1a1a1a"/>
+      <stop offset="70%"  stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <!-- Primary specular highlight -->
+    <radialGradient id="gloss1" cx="35%" cy="28%" r="40%">
+      <stop offset="0%"  stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Secondary rim light - warm gold tint (subtle brand nod) -->
+    <radialGradient id="rim" cx="72%" cy="75%" r="45%">
+      <stop offset="0%"  stop-color="#c9a84c" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Tiny secondary sparkle -->
+    <radialGradient id="gloss2" cx="62%" cy="22%" r="15%">
+      <stop offset="0%"  stop-color="#ffffff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Sphere base -->
+  <circle cx="16" cy="15" r="13" fill="url(#sphere)" filter="url(#shadow)"/>
+
+  <!-- Rim light (gold warmth on lower right) -->
+  <circle cx="16" cy="15" r="13" fill="url(#rim)"/>
+
+  <!-- Primary gloss highlight -->
+  <circle cx="16" cy="15" r="13" fill="url(#gloss1)"/>
+
+  <!-- Secondary sparkle -->
+  <circle cx="16" cy="15" r="13" fill="url(#gloss2)"/>
+
+  <!-- Tiny sharp specular dot -->
+  <ellipse cx="11.5" cy="9.5" rx="2.2" ry="1.4"
+           fill="white" opacity="0.35"
+           transform="rotate(-20 11.5 9.5)"/>
+</svg>

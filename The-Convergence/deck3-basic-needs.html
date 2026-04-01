@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Deck 3: The Bare Minimum — A Spoken Space</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96A;--olive:#6B7C47;--tan:#C2A87E;
+  --brown:#5C3D2E;--black:#0D0D0D;--b2:#141414;--b3:#1C1C1C;
+  --cream:#F0EAD6;--red:#9B2C2C;--acc:#3DB5A5;--muted:#666;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--black);color:var(--cream);font-family:'Raleway',sans-serif;overflow:hidden;}
+#ss{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:44px 28px 88px;opacity:0;transform:translateX(70px);transition:opacity .5s,transform .5s;pointer-events:none;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.out{opacity:0;transform:translateX(-70px);}
+#pb{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--acc),var(--gold));transition:width .4s;z-index:200;}
+#ct{position:fixed;top:14px;right:18px;font-size:10px;letter-spacing:3px;color:var(--muted);z-index:200;text-transform:uppercase;}
+#nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;z-index:200;}
+.nb{width:42px;height:42px;border-radius:50%;border:1px solid var(--brown);background:rgba(14,14,14,.95);color:var(--tan);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.nb:hover{border-color:var(--acc);color:var(--acc);}
+.nb:disabled{opacity:.2;cursor:default;}
+#dots{display:flex;gap:6px;align-items:center;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--brown);cursor:pointer;transition:all .3s;}
+.dot.active{background:var(--acc);width:18px;border-radius:3px;}
+.ey{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--acc);margin-bottom:8px;}
+.st{font-family:'Cinzel',serif;font-size:clamp(18px,3.5vw,30px);font-weight:700;line-height:1.2;color:var(--gold);}
+.ss{font-family:'Crimson Text',serif;font-size:clamp(13px,1.8vw,15px);color:var(--tan);line-height:1.65;margin-top:6px;}
+.dv{width:36px;height:2px;background:linear-gradient(90deg,var(--acc),transparent);margin:8px 0;}
+.si{width:100%;max-width:820px;display:flex;flex-direction:column;gap:14px;}
+.cw{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:14px;}
+canvas{max-height:240px!important;}
+.ca{padding:12px 16px;border-radius:6px;border-left:3px solid var(--acc);background:var(--b3);font-size:clamp(11px,1.6vw,13px);line-height:1.6;color:var(--cream);}
+.ca.red{border-left-color:var(--red);}
+.ca.gold{border-left-color:var(--gold);}
+.ca strong{color:var(--acc);}
+.ca.red strong{color:#E05252;}
+.ca.gold strong{color:var(--gold);}
+.src{font-size:10px;color:#383838;font-style:italic;text-align:right;margin-top:2px;}
+#s0{text-align:center;}
+#s0::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 40%,rgba(61,181,165,.07) 0%,transparent 70%);pointer-events:none;}
+.mt{font-family:'Cinzel',serif;font-size:clamp(28px,7vw,72px);font-weight:900;color:var(--acc);line-height:.9;text-shadow:0 0 60px rgba(61,181,165,.2);}
+.mt span{color:var(--gold);display:block;font-size:.45em;margin-top:10px;letter-spacing:3px;}
+.sc{font-family:'Crimson Text',serif;font-style:italic;font-size:clamp(13px,2vw,17px);color:var(--tan);max-width:520px;margin:22px auto 0;line-height:1.7;}
+.sc strong{color:var(--gold-l);font-style:normal;}
+.bf{position:absolute;bottom:90px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--brown);}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:820px;}
+.sc2{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:14px;text-align:center;}
+.sn{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,36px);color:var(--gold);display:block;line-height:1;}
+.sl{font-size:11px;color:var(--tan);margin-top:6px;line-height:1.4;}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;width:100%;max-width:820px;}
+.ac{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:16px;transition:border-color .2s;}
+.ac:hover{border-color:var(--acc);}
+.at{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:8px;}
+.ah{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin-bottom:8px;}
+.al{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.al li{font-size:12px;color:var(--tan);padding-left:14px;position:relative;line-height:1.4;}
+.al li::before{content:'→';position:absolute;left:0;color:var(--olive);font-size:11px;}
+.cq{font-family:'Cinzel',serif;font-size:clamp(16px,3.5vw,26px);color:var(--gold);max-width:560px;line-height:1.4;margin:0 auto 20px;}
+.cb{font-family:'Crimson Text',serif;font-style:italic;font-size:clamp(13px,1.8vw,16px);color:var(--tan);max-width:460px;line-height:1.7;margin:0 auto 24px;}
+.cc{display:inline-block;padding:11px 28px;border:1px solid var(--acc);border-radius:2px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);text-decoration:none;transition:all .2s;}
+.cc:hover{background:var(--acc);color:var(--black);}
+@media(max-width:600px){.slide{padding:20px 14px 88px;}canvas{max-height:180px!important;}.ag{grid-template-columns:1fr;}.sg{grid-template-columns:repeat(3,1fr);}.si{gap:10px;}}
+@media(max-height:620px){canvas{max-height:150px!important;}.slide{padding:16px 16px 80px;}.si{gap:8px;}}
+</style>
+</head>
+<body>
+<div id="pb"></div>
+<div id="ct">1 / 12</div>
+<div id="ss">
+
+<!-- S0: TITLE -->
+<div class="slide active" id="s0">
+  <p class="ey" style="position:relative;">A Spoken Space — Research Series Vol. 2 · Deck 3 of 4</p>
+  <h1 class="mt">THE BARE<br>MINIMUM<span>Food. Water. Shelter. All Under Siege.</span></h1>
+  <p class="sc">The most basic things a human needs to survive.<br><strong>All three are being stripped from millions of Americans at once — by design, by policy, and by neglect.</strong></p>
+  <p class="bf">Impact Poet · Ms. JuruDaWise · impactpoet.carrd.co</p>
+</div>
+
+<!-- S1: FOOD SNAPSHOT -->
+<div class="slide" id="s1">
+  <div class="si">
+    <div><p class="ey">Chapter 1 — Food</p><h2 class="st">47 Million Americans Don't Have Enough to Eat</h2><div class="dv"></div>
+    <p class="ss">Food insecurity in the United States has remained at crisis levels since the pandemic — and the cuts coming in 2025 are about to make it dramatically worse.</p></div>
+    <div class="sg">
+      <div class="sc2"><span class="sn">47.4M</span><p class="sl">People living in food-insecure households in 2023</p></div>
+      <div class="sc2"><span class="sn">13.7%</span><p class="sl">Of ALL U.S. households were food insecure in 2024 (USDA)</p></div>
+      <div class="sc2"><span class="sn">13.8M</span><p class="sl">Children in food-insecure homes — up from 13.5M the year before</p></div>
+    </div>
+    <div class="ca red"><strong>The racial disparity is stark:</strong> 23.3% of Black households and 21.9% of Latino households experience food insecurity — more than <strong>double</strong> the rate of White non-Latino households (9.9%). This is not random. It is the accumulated weight of every broken policy, from redlining to SNAP cuts.</div>
+    <p class="src">Sources: USDA ERS ERR-358 2024 · FRAC Hunger Report · Feeding America Elevating Voices 2025</p>
+  </div>
+</div>
+
+<!-- S2: SNAP CUTS -->
+<div class="slide" id="s2">
+  <div class="si">
+    <div><p class="ey">Chapter 2 — The Policy Weapon</p><h2 class="st">$187 Billion Ripped From the Hungry</h2><div class="dv"></div>
+    <p class="ss">H.R. 1, signed July 4, 2025, contains the largest SNAP cuts in the program's history. The Congressional Budget Office scored it. The numbers are not speculation.</p></div>
+    <div class="cw"><canvas id="c2"></canvas></div>
+    <div class="ca red"><strong>Who loses:</strong> 4 million people lose food assistance or see it cut substantially. 800,000 adults 55–64. ~1 million in areas where jobs are scarce. 300,000+ veterans, homeless individuals, and former foster youth. All 40 million SNAP participants will see average benefits erode by <strong>~$14/month by 2034</strong> as Thrifty Food Plan adjustments are frozen. FRAC calculates H.R. 1 reduces income for the <strong>poorest 20% of Americans by 3.8%</strong> while increasing income for the wealthiest 20% by 3.7%.</div>
+    <p class="src">Sources: CBO Score H.R. 1 · No Kid Hungry · CBPP · FRAC · Congress.gov R48552</p>
+  </div>
+</div>
+
+<!-- S3: FOOD PRICES -->
+<div class="slide" id="s3">
+  <div class="si">
+    <div><p class="ey">Chapter 3 — The Price Tag</p><h2 class="st">Food Prices Are Up 23.6% Since 2020</h2><div class="dv"></div>
+    <p class="ss">Food prices surged 23.6% from 2020 to 2024. Then came the tariffs. The households with the least absorb the most.</p></div>
+    <div class="cw"><canvas id="c3"></canvas></div>
+    <div class="ca gold"><strong>Tariff impact:</strong> The U.S. effective tariff rate peaked at 18.6% in August 2025 — highest since 1933. Food prices rose an additional <strong>2.4–3.4%</strong> from tariffs alone. The average household lost <strong>$2,300–$2,400/year</strong> in purchasing power. The bottom income decile bears a burden <strong>3× that of the top decile.</strong> 90% of Americans report being "stressed" about grocery costs (AP-NORC August 2025).</div>
+    <p class="src">Sources: USDA ERS · BLS CPI · Yale Budget Lab Sept 2025 · AP-NORC Aug 2025</p>
+  </div>
+</div>
+
+<!-- S4: HOUSING -->
+<div class="slide" id="s4">
+  <div class="si">
+    <div><p class="ey">Chapter 4 — Shelter</p><h2 class="st">You Need Six Figures to Buy a Home Now</h2><div class="dv"></div>
+    <p class="ss">The median home costs $416,900. You need to earn $106,000–$117,000 a year to afford it. The median household income is $82,200. The math doesn't work — and it wasn't an accident.</p></div>
+    <div class="cw"><canvas id="c4"></canvas></div>
+    <div class="ca red"><strong>74.9% of U.S. households</strong> — 100.6 million people — cannot afford a median-priced new home (NAHB March 2025). The home price-to-income ratio hit <strong>5.0</strong>, near all-time highs, up from 3.2 in the 1990s (Harvard JCHS). There is a shortage of <strong>7.3 million</strong> affordable rental units. A typical household would need to spend <strong>44.6%</strong> of income to afford the median home — nearly 15 points above the standard "affordable" threshold of 30%.</div>
+    <p class="src">Sources: NAHB March 2025 · Harvard JCHS · NLIHC · Visual Capitalist · Realtor.com 2025</p>
+  </div>
+</div>
+
+<!-- S5: HOMELESSNESS -->
+<div class="slide" id="s5">
+  <div class="si">
+    <div><p class="ey">Chapter 5</p><h2 class="st">Record Homelessness. Every Year.</h2><div class="dv"></div>
+    <p class="ss">771,480 people were homeless on a single night in January 2024 — the highest count ever recorded. Families with children surged 39.4%. And the cuts haven't fully landed yet.</p></div>
+    <div class="cw"><canvas id="c5"></canvas></div>
+    <div class="ca red"><strong>150,000 children</strong> were homeless in 2024 — a 33% increase in one year. Older adults 55+ are the fastest-growing homeless population, projected to <strong>triple between 2017–2030</strong>. Family homelessness is now at its highest recorded level. This is not a housing shortage. This is a transfer of wealth — from people who need housing to corporations that treat it as an investment vehicle.</div>
+    <p class="src">Sources: HUD Annual Homelessness Assessment Report Dec 2024 · National Alliance to End Homelessness 2025 Edition</p>
+  </div>
+</div>
+
+<!-- S6: WATER -->
+<div class="slide" id="s6">
+  <div class="si">
+    <div><p class="ey">Chapter 6 — Water</p><h2 class="st">45% of Your Tap Water Has Detectable PFAS</h2><div class="dv"></div>
+    <p class="ss">The U.S. has some of the best water infrastructure in the world — and it's failing. Lead pipes, PFAS contamination, and infrastructure neglect affect communities of color hardest and most visibly.</p></div>
+    <div class="cw"><canvas id="c6"></canvas></div>
+    <div class="ca gold"><strong>4 million lead service lines</strong> remain in U.S. water systems (EPA 7th DWINSA). <strong>PFAS detected in 45% of tap water</strong> — contaminating ~7,500 locations affecting more than <strong>130 million people</strong> (USGS). <strong>2.2 million Americans</strong> live without running water or basic plumbing. 1 in 20 American Indian/Alaska Native households lack plumbing. <strong>Race is still "the strongest determinant"</strong> of water access gaps (NBC News / DigDeep). U.S. water infrastructure gets a grade of <strong>C−</strong> from the American Society of Civil Engineers.</div>
+    <p class="src">Sources: EPA · USGS · DigDeep/US Water Alliance · ASCE 2025 Infrastructure Report Card</p>
+  </div>
+</div>
+
+<!-- S7: ENERGY POVERTY -->
+<div class="slide" id="s7">
+  <div class="si">
+    <div><p class="ey">Chapter 7 — The Hidden Crisis</p><h2 class="st">1 in 3 Households Can't Afford Their Electricity</h2><div class="dv"></div>
+    <p class="ss">Energy poverty is the crisis that connects the others. When you can't afford your electric bill, food spoils. The heat goes off. Medications that need refrigeration are compromised. Everything gets harder.</p></div>
+    <div class="cw"><canvas id="c7"></canvas></div>
+    <div class="ca red"><strong>34 million households</strong> have reduced or forgone medical care to pay energy bills (Initiative for Energy Justice). Families below 50% of the poverty line spend <strong>33% of income</strong> on energy. Black households face <strong>64% higher energy cost burdens</strong> than White households in major metros. Average monthly electric bills rose from <strong>$121 in 2021 to $144 in 2024</strong>. Utility rates are projected to rise another <strong>40% by 2030</strong> — and AI data centers are a primary cause (Deck 1).</div>
+    <p class="src">Sources: EIA · Initiative for Energy Justice · Science Advances · Health Affairs · Palmetto 2024</p>
+  </div>
+</div>
+
+<!-- S8: COMPOUND -->
+<div class="slide" id="s8">
+  <div class="si">
+    <div><p class="ey">Chapter 8</p><h2 class="st">The Compounding Effect Is the Point</h2><div class="dv"></div>
+    <p class="ss">None of these crises exist in isolation. They compound. When food, housing, water, and energy all fail at once, the body bears all of it — physiologically, not just economically.</p></div>
+    <div class="cw"><canvas id="c8"></canvas></div>
+    <div class="ca gold"><strong>The research is clear:</strong> Food insecurity + housing instability together create measurably worse health outcomes than either alone. Children in energy-insecure households have <strong>greater odds of hospitalization</strong>. Families spending 50%+ of income on shelter have <strong>no money left for food</strong>. H.R. 1's SNAP cuts + tariff-driven price increases + rising utility rates = a <strong>triple squeeze</strong> that reduces income for the poorest 20% by 3.8% while every essential cost climbs simultaneously.</div>
+    <p class="src">Sources: FRAC · Urban Institute WBNS Dec 2025 · Health Affairs · CBS News Affordability Report Nov 2025</p>
+  </div>
+</div>
+
+<!-- S9: WHAT YOU CAN DO -->
+<div class="slide" id="s9">
+  <div class="si" style="max-width:860px;">
+    <div><p class="ey">Chapter 9</p><h2 class="st">Surviving and Building at the Same Time</h2><div class="dv"></div>
+    <p class="ss">You can't fix the system alone. But you can build resilience for yourself and your neighbors right now — without waiting for officials to act.</p></div>
+    <div class="ag">
+      <div class="ac">
+        <p class="at">Food</p><p class="ah">Build a Food Network</p>
+        <ul class="al">
+          <li>Find or start a mutual aid food network in your zip code</li>
+          <li>Buy directly from local farmers — farmers markets, CSA boxes, co-ops</li>
+          <li>Community gardens create food AND neighborhood bonds</li>
+          <li>Know your SNAP rights — and who in your community is newly ineligible after H.R. 1</li>
+        </ul>
+      </div>
+      <div class="ac">
+        <p class="at">Housing</p><p class="ah">Know Your Protections</p>
+        <ul class="al">
+          <li>Research community land trusts in your area — they keep housing permanently affordable</li>
+          <li>Tenant unions have real power — organize with neighbors before crisis hits</li>
+          <li>Track corporate real estate purchases in your neighborhood (public record)</li>
+          <li>Push local government for community benefit agreements before any new development</li>
+        </ul>
+      </div>
+      <div class="ac">
+        <p class="at">Water &amp; Energy</p><p class="ah">Decentralize</p>
+        <ul class="al">
+          <li>Get your tap water tested — EPA has free testing resources</li>
+          <li>Demand lead pipe replacement in your district — it's federally funded</li>
+          <li>Switch to an electric cooperative — nonprofits that serve members, not profit</li>
+          <li>Community solar programs lower bills and don't require ownership</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S10: CLOSING -->
+<div class="slide" id="s10" style="text-align:center;">
+  <p class="ey" style="margin-bottom:20px;">A Spoken Space — Off Mic Research Series</p>
+  <p class="cq">"Food. Water. Shelter.<br>They called these rights once.<br>Someone turned them into products."</p>
+  <p class="cb">Deck 3 of 4.<br>The last deck ties it all together —<br>and shows who holds the rope on every single one of these crises simultaneously.</p>
+  <a class="cc" href="https://impactpoet.carrd.co" target="_blank">Enter The Space — impactpoet.carrd.co</a>
+  <p style="margin-top:28px;font-size:11px;letter-spacing:2px;color:var(--brown);text-transform:uppercase;">Deck 3 of 4 · Off Mic Podcast · Episode 1 · April 1, 2026</p>
+</div>
+
+</div>
+<nav id="nav">
+  <button class="nb" id="bp" disabled>&#8592;</button>
+  <div id="dots"></div>
+  <button class="nb" id="bn">&#8594;</button>
+</nav>
+<script>
+const TOTAL=11;let cur=0,anim=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));dotsEl.appendChild(d);}
+function upd(){document.getElementById('pb').style.width=((cur+1)/TOTAL*100)+'%';document.getElementById('ct').textContent=(cur+1)+' / '+TOTAL;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));document.getElementById('bp').disabled=cur===0;document.getElementById('bn').disabled=cur===TOTAL-1;}
+function goTo(idx){if(anim||idx===cur||idx<0||idx>=TOTAL)return;anim=true;const o=document.getElementById('s'+cur),n=document.getElementById('s'+idx);o.classList.add('out');o.classList.remove('active');setTimeout(()=>{o.classList.remove('out');n.classList.add('active');cur=idx;upd();drawChart(cur);anim=false;},420);}
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')goTo(cur+1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')goTo(cur-1);});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goTo(dx<0?cur+1:cur-1);},{passive:true});
+const C={gold:'#C9A84C',olive:'#6B7C47',tan:'#C2A87E',brown:'#5C3D2E',red:'#9B2C2C',acc:'#3DB5A5',grid:'rgba(255,255,255,0.06)',tick:'#888'};
+const base={responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:C.tick,font:{family:'Raleway',size:11},boxWidth:12}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.acc,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}},scales:{x:{grid:{color:C.grid},ticks:{color:C.tick,font:{family:'Raleway',size:10}}},y:{grid:{color:C.grid},ticks:{color:C.tick,font:{family:'Raleway',size:10}}}}};
+const charts={};
+function drawChart(idx){
+  if(charts[idx])return;
+  if(idx===2){charts[2]=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['Total 10-yr cut ($B)','People losing benefits (M)','Monthly benefit\nreduction by 2034 ($)','States covering more\nadmin costs (%)'],datasets:[{label:'H.R. 1 SNAP Impact',data:[187,4,14,75],backgroundColor:[C.red,'#E05252',C.brown,C.acc],borderRadius:5}]},options:{...base,indexAxis:'y',plugins:{...base.plugins,legend:{display:false}}}});}
+  if(idx===3){charts[3]=new Chart(document.getElementById('c3'),{type:'bar',data:{labels:['Total food\n2020–2024','Eggs\n2025','Beef &\nveal','Coffee\n& tea','Tariff\nadd-on'],datasets:[{label:'% price increase',data:[23.6,31.6,14.4,11.8,3.0],backgroundColor:[C.acc,C.red,'#E05252',C.brown,C.gold],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}},scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'%'}}}}});}
+  if(idx===4){charts[4]=new Chart(document.getElementById('c4'),{type:'line',data:{labels:['1985','1990','1995','2000','2005','2010','2015','2020','2025'],datasets:[{label:'Median Home Price ($K)',data:[75,100,115,140,220,180,220,295,417],borderColor:C.red,backgroundColor:'rgba(155,44,44,.1)',fill:true,borderWidth:2.5,tension:.3,pointRadius:4,pointBackgroundColor:C.red},{label:'Median Household Income ($K)',data:[29,33,36,42,47,50,56,68,82],borderColor:C.acc,backgroundColor:'rgba(61,181,165,.05)',fill:true,borderWidth:2.5,tension:.3,pointRadius:4,pointBackgroundColor:C.acc}]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>'$'+v+'K'}}}}});}
+  if(idx===5){charts[5]=new Chart(document.getElementById('c5'),{type:'bar',data:{labels:['2018','2019','2020','2021','2022','2023','2024'],datasets:[{label:'Total Homeless (thousands)',data:[553,568,580,578,583,654,771],backgroundColor:['#5C3D2E','#5C3D2E','#5C3D2E','#5C3D2E','#5C3D2E','#9B2C2C',C.red],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}},scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'K'}}}}});}
+  if(idx===6){charts[6]=new Chart(document.getElementById('c6'),{type:'doughnut',data:{labels:['Safe tap water (approx)','PFAS contamination detected','Lead pipe risk areas','No running water (2.2M households)'],datasets:[{data:[55,45,30,1],backgroundColor:['#3DB5A5','#9B2C2C','#5C3D2E','#E05252'],borderColor:['#0D0D0D'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom',labels:{color:C.tick,font:{family:'Raleway',size:10},boxWidth:12}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.acc,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}}}});}
+  if(idx===7){charts[7]=new Chart(document.getElementById('c7'),{type:'bar',data:{labels:['Avg monthly bill\n2021 ($)','Avg monthly bill\n2024 ($)','% income on energy\n(poverty level)','Black vs White\nenergy burden premium (%)'],datasets:[{label:'Energy Cost Data',data:[121,144,33,64],backgroundColor:[C.brown,C.red,C.acc,C.gold],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}}}});}
+  if(idx===8){charts[8]=new Chart(document.getElementById('c8'),{type:'radar',data:{labels:['Food Insecurity','Housing Unaffordability','Water Access','Energy Poverty','Medical Access'],datasets:[{label:'Crisis Level 2019 (baseline)',data:[55,55,45,50,50],borderColor:C.brown,backgroundColor:'rgba(92,61,46,.2)',pointBackgroundColor:C.brown,pointRadius:3},{label:'Crisis Level 2025',data:[80,90,65,78,72],borderColor:C.red,backgroundColor:'rgba(155,44,44,.15)',pointBackgroundColor:C.red,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:C.tick,font:{family:'Raleway',size:10}}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.acc,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}},scales:{r:{grid:{color:'rgba(255,255,255,0.08)'},pointLabels:{color:C.tan,font:{family:'Raleway',size:10}},ticks:{display:false}}}}});}
+}
+upd();
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid #1a1a1a;">
+  <a href="deck2-space-weather.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">← Deck 02: Space Weather</a>
+  <a href="index.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">Library Home</a>
+  <a href="deck4-the-root.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">Deck 04: The Root →</a>
+</div>
+<div style="max-width:900px;margin:0 auto;padding:0 24px 40px;">
+  <div style="border-top:1px solid #1a1a1a;padding-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px;">
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">📂 Source Bucket</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Every stat sourced and hyperlinked. <a href="sources.html" style="color:#C9A84C;text-decoration:none;">Open the Source Bucket →</a></p>
+    </div>
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">🔍 How to Fact Check</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Find this deck in the Source Bucket and click any ↗ Fact Check link — goes straight to the original source.</p>
+    </div>
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">⚠️ See an Error?</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Flag it. Email <span class="err-email"></span> with the deck, stat, and your source.</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){var u='jaeeezy',d='pm\u002eme',e=u+'\u0040'+d;document.querySelectorAll('.err-email').forEach(function(el){var a=document.createElement('a');a.href='mailto:'+e;a.textContent=e;a.style.color='#C9A84C';el.appendChild(a);});})();
+</script>
+</body>
+</html>

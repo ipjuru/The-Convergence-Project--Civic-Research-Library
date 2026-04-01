@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Source Bank — The Convergence Project</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96A;
+  --black:#0D0D0D;--b2:#111;--b3:#181818;
+  --cream:#F0EAD6;--tan:#C2A87E;
+  --border:rgba(201,168,76,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--cream);font-family:'Raleway',sans-serif;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+
+/* NAV */
+.top-nav{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:20px 32px;border-bottom:1px solid #1a1a1a;flex-wrap:wrap;gap:12px;}
+.nav-back{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,0.6);text-decoration:none;transition:color .2s;}
+.nav-back:hover{color:var(--gold);}
+.nav-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#333;}
+
+/* WRAPPER */
+.wrapper{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 24px 120px;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:60px;}
+.hero-eye{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#444;margin-bottom:12px;display:block;}
+.hero-title{font-family:'Cinzel',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:var(--gold);line-height:1;margin-bottom:16px;}
+.hero-rule{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:20px auto;}
+.hero-sub{font-family:'Crimson Text',serif;font-style:italic;font-size:1.1rem;color:var(--tan);max-width:560px;margin:0 auto;line-height:1.75;}
+
+/* QUICK NAV */
+.quick-nav{background:var(--b2);border:1px solid var(--border);padding:28px 32px;margin-bottom:56px;}
+.quick-nav-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block;}
+.quick-nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.qn-link{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:0.1em;color:rgba(201,168,76,0.7);text-decoration:none;padding:6px 0;border-bottom:1px solid #1a1a1a;transition:color .2s;display:block;}
+.qn-link:hover{color:var(--gold);}
+
+/* VOLUME HEADER */
+.vol-header{margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid var(--gold);}
+.vol-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
+.vol-title{font-family:'Cinzel',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--cream);}
+
+/* DECK SECTION */
+.deck-section{margin-bottom:56px;}
+.deck-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:16px 20px;background:var(--b2);border-left:3px solid var(--gold);}
+.deck-num{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.deck-name{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--cream);}
+.deck-link{margin-left:auto;font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,0.5);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.deck-link:hover{color:var(--gold);}
+
+/* SOURCE ENTRY */
+.source-list{list-style:none;}
+.source-item{padding:12px 0;border-bottom:1px solid #1a1a1a;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;}
+.source-item:last-child{border-bottom:none;}
+.source-num{font-family:'Cinzel',serif;font-size:10px;color:#444;min-width:28px;padding-top:2px;}
+.source-body{}
+.source-title{font-family:'Raleway',sans-serif;font-size:13px;color:var(--cream);margin-bottom:3px;line-height:1.4;}
+.source-meta{font-family:'Crimson Text',serif;font-style:italic;font-size:12px;color:#555;}
+.source-stat{font-family:'Cinzel',serif;font-size:10px;color:var(--gold);background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:3px 8px;white-space:nowrap;align-self:center;}
+.fact-link{display:inline-flex;align-items:center;gap:4px;font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:2px 8px;transition:all .2s;margin-top:4px;}
+.fact-link:hover{background:rgba(201,168,76,0.1);border-color:var(--gold);}
+
+/* CONTESTED NOTICE */
+.contested{background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.15);padding:16px 20px;margin:20px 0;border-radius:2px;}
+.contested p{font-family:'Crimson Text',serif;font-style:italic;font-size:14px;color:#666;line-height:1.6;}
+.contested strong{color:var(--tan);}
+
+/* VOLUME SPACER */
+.vol-spacer{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:64px 0;}
+
+/* UNIVERSAL DECK FOOTER */
+.uni-footer{margin-top:64px;border-top:1px solid #1a1a1a;padding-top:40px;}
+.uni-footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:28px;}
+.uni-footer-box{background:var(--b2);border:1px solid var(--border);padding:20px;}
+.uni-footer-box-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
+.uni-footer-box p{font-family:'Crimson Text',serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;}
+.uni-footer-box a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.3);}
+.uni-footer-box a:hover{border-color:var(--gold);}
+.uni-footer-bottom{text-align:center;padding:20px 0;border-top:1px solid #1a1a1a;}
+.uni-footer-bottom p{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#333;}
+@media(max-width:640px){.uni-footer-grid{grid-template-columns:1fr;}}
+
+/* BACK TO TOP */
+.back-top{text-align:center;margin-top:48px;}
+.back-top a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,0.5);text-decoration:none;transition:color .2s;}
+.back-top a:hover{color:var(--gold);}
+
+/* FOOTER */
+.site-footer{text-align:center;margin-top:60px;padding-top:32px;border-top:1px solid var(--border);}
+.site-footer p{font-family:'Crimson Text',serif;font-style:italic;font-size:13px;color:#333;}
+
+@media(max-width:640px){
+  .top-nav{padding:16px 20px;}
+  .wrapper{padding:40px 16px 80px;}
+  .source-item{grid-template-columns:auto 1fr;}
+  .source-stat{display:none;}
+  .quick-nav-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">← The Convergence Project</a>
+  <span class="nav-title">Source Bank</span>
+</nav>
+
+<div class="wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-eye">Receipts &amp; Perspective</span>
+    <h1 class="hero-title">Source Bank</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Every data point. Every study. Every government database. Organized by series and deck — in presentation order. Fact-check anything, anytime.</p>
+  </div>
+
+  <!-- QUICK NAV -->
+  <div class="quick-nav" id="top">
+    <span class="quick-nav-title">Jump to Deck</span>
+    <div class="quick-nav-grid">
+      <a class="qn-link" href="#deck01">Deck 01 — Water &amp; Energy</a>
+      <a class="qn-link" href="#deck02">Deck 02 — Space Weather</a>
+      <a class="qn-link" href="#deck03">Deck 03 — Basic Needs</a>
+      <a class="qn-link" href="#deck04">Deck 04 — The Root</a>
+      <a class="qn-link" href="#deck05">Deck 05 — Gov &amp; Corps</a>
+      <a class="qn-link" href="#deck06">Deck 06 — Social Experiment</a>
+      <a class="qn-link" href="#deck07">Deck 07 — Surveillance State</a>
+      <a class="qn-link" href="#deck08">Deck 08 — War on Children</a>
+      <a class="qn-link" href="#deck09">Deck 09 — War on Men</a>
+      <a class="qn-link" href="#deck10">Deck 10 — War on Women</a>
+      <a class="qn-link" href="#deck11">Deck 11 — Music, Arts &amp; History</a>
+      <a class="qn-link" href="#deck12">Deck 12 — The American Family Unit</a>
+    </div>
+  </div>
+
+  <!-- DISCLOSURE BLURB -->
+  <div style="background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--gold);padding:24px 28px;margin-bottom:48px;">
+    <p style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">How to Use This Source Bucket</p>
+    <p style="font-family:'Crimson Text',serif;font-size:15px;color:rgba(240,234,214,0.75);line-height:1.8;margin-bottom:10px;">Every source listed here links directly to the original document — a government database, peer-reviewed study, or nonpartisan institution. To fact-check a specific stat from a deck, use the <strong style="color:var(--cream);">Jump to Deck</strong> nav above to find that deck's sources, then click <strong style="color:var(--cream);">↗ Fact Check</strong> next to the relevant entry.</p>
+    <p style="font-family:'Crimson Text',serif;font-size:15px;color:rgba(240,234,214,0.75);line-height:1.8;margin-bottom:10px;"><strong style="color:var(--cream);">Link shows a 404?</strong> Government and institutional sites occasionally reorganize their pages. Try searching the source title + institution name to find the updated URL. If a stat feels alarming — that's the point of checking it. Scrutiny is welcome here.</p>
+    <p style="font-family:'Crimson Text',serif;font-size:15px;color:rgba(240,234,214,0.75);line-height:1.8;"><strong style="color:var(--cream);">Contested areas</strong> are flagged at the bottom of each deck section — these are places where the science or data is still actively debated. That context matters. This library does not present contested findings as settled fact.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- VOL 1: THE CONVERGENCE             -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="vol-header" id="vol1">
+    <span class="vol-label">Research Series · Vol. 1</span>
+    <h2 class="vol-title">The Convergence — Water · Sun · Survival · The Root</h2>
+  </div>
+
+  <!-- DECK 01 -->
+  <div class="deck-section" id="deck01">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 01</p>
+        <p class="deck-name">Thirst &amp; Power — Water &amp; Energy</p>
+      </div>
+      <a class="deck-link" href="deck1-water-energy.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">Goldman Sachs Research — AI Power Demand</p>
+          <p class="source-meta">Goldman Sachs, 2024 · AI infrastructure and energy consumption projections</p>
+          <a class="fact-link" href="https://www.goldmansachs.com/insights/articles/ai-to-drive-165-increase-in-data-center-power-demand-by-2030" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">$380B Tech Spend</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">Lawrence Berkeley National Laboratory — U.S. Data Center Energy Use</p>
+          <p class="source-meta">DOE / LBNL, 2024 · Electricity consumption by data centers nationwide</p>
+          <a class="fact-link" href="https://eta.lbl.gov/publications/united-states-data-center-energy" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Energy Use Data</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">EPA — Water Withdrawal and Consumption in the U.S.</p>
+          <p class="source-meta">U.S. Environmental Protection Agency · Water use by sector including data centers</p>
+          <a class="fact-link" href="https://www.epa.gov/watersense/how-we-use-water" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Water Rights</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">Nature — Water Consumption of Data Centers (Ren et al.)</p>
+          <p class="source-meta">Nature, 2023 · "Making AI Less 'Thirsty'" — peer-reviewed water consumption study</p>
+          <a class="fact-link" href="https://www.nature.com/articles/s41545-023-00229-7" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Water Consumption</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">5</span>
+        <div class="source-body">
+          <p class="source-title">EIA — Electric Power Monthly</p>
+          <p class="source-meta">U.S. Energy Information Administration · Monthly electricity rates and consumption by state</p>
+          <a class="fact-link" href="https://www.eia.gov/electricity/monthly/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Utility Rates</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 02 -->
+  <div class="deck-section" id="deck02">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 02</p>
+        <p class="deck-name">The Sun Knows — Space Weather &amp; Health</p>
+      </div>
+      <a class="deck-link" href="deck2-space-weather.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">NOAA Space Weather Prediction Center — Solar Cycle 25 Forecast</p>
+          <p class="source-meta">NOAA / NASA, 2023–2024 · Solar maximum predictions and current cycle data</p>
+          <a class="fact-link" href="https://www.swpc.noaa.gov/products/solar-cycle-progression" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Solar Cycle 25</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">Stroke Journal — Geomagnetic Storms and Stroke Risk (Feigin et al.)</p>
+          <p class="source-meta">American Heart Association / Stroke, 2014 · +52% stroke risk during severe geomagnetic storms</p>
+          <a class="fact-link" href="https://www.ahajournals.org/doi/10.1161/STROKEAHA.113.003540" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">+52% Stroke Risk</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">International Journal of Biometeorology — Geomagnetic Activity and Psychiatric Admissions</p>
+          <p class="source-meta">Peer-reviewed, multiple studies · Mental health correlations with solar/geomagnetic activity</p>
+          <a class="fact-link" href="https://link.springer.com/journal/484" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Mental Health Link</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">Schumann Resonances — Global Electromagnetic Resonance Data (NASA)</p>
+          <p class="source-meta">NASA · Earth's electromagnetic field frequency monitoring</p>
+          <a class="fact-link" href="https://www.nasa.gov/centers-and-facilities/goddard/schumann-resonance/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Schumann Data</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 03 -->
+  <div class="deck-section" id="deck03">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 03</p>
+        <p class="deck-name">The Bare Minimum — Food, Water, Shelter</p>
+      </div>
+      <a class="deck-link" href="deck3-basic-needs.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">USDA Economic Research Service — Household Food Security in the United States, 2023</p>
+          <p class="source-meta">USDA ERS, 2024 · 47.4 million food insecure Americans</p>
+          <a class="fact-link" href="https://www.ers.usda.gov/topics/food-nutrition-assistance/food-security-in-the-u-s/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">47.4M Insecure</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">National Low Income Housing Coalition — Out of Reach 2024</p>
+          <p class="source-meta">NLIHC, 2024 · Housing wage gap and affordable unit shortage nationally</p>
+          <a class="fact-link" href="https://nlihc.org/oor" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Housing Crisis</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">EWG — PFAS Contamination in U.S. Drinking Water</p>
+          <p class="source-meta">Environmental Working Group, 2024 · 200M+ Americans served water with detectable PFAS</p>
+          <a class="fact-link" href="https://www.ewg.org/interactive-maps/pfas_contamination/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Water Safety</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">CDC — SNAP Participation and Food Security</p>
+          <p class="source-meta">CDC / USDA, 2024 · Supplemental Nutrition Assistance Program participation trends</p>
+          <a class="fact-link" href="https://www.cdc.gov/nchs/nhis/nutrition/index.htm" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">SNAP Data</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 04 -->
+  <div class="deck-section" id="deck04">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 04</p>
+        <p class="deck-name">The Root — Corporate Consolidation &amp; Historical Precedent</p>
+      </div>
+      <a class="deck-link" href="deck4-the-root.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">BlackRock / Vanguard / State Street — Institutional Ownership of S&P 500</p>
+          <p class="source-meta">Multiple financial disclosures, 2023 · "Big Three" own ~88% of S&P 500 companies</p>
+          <a class="fact-link" href="https://corpgov.law.harvard.edu/2019/08/05/the-specter-of-the-giant-three/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">88% S&P 500</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">Economic Policy Institute — Productivity-Pay Gap</p>
+          <p class="source-meta">EPI, 2024 · Productivity grew 59.7% since 1979, wages grew 15.8%</p>
+          <a class="fact-link" href="https://www.epi.org/productivity-pay-gap/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Productivity Gap</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">OpenSecrets — Federal Lobbying Totals</p>
+          <p class="source-meta">OpenSecrets, 2025 · $5.08 billion in federal lobbying — record high</p>
+          <a class="fact-link" href="https://www.opensecrets.org/federal-lobbying" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">$5.08B Lobbying</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="vol-spacer"></div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- VOL 2: POWER & CONTROL             -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="vol-header" id="vol2">
+    <span class="vol-label">Research Series · Vol. 2</span>
+    <h2 class="vol-title">Power &amp; Control — Politics · Technology · Surveillance</h2>
+  </div>
+
+  <!-- DECK 05 -->
+  <div class="deck-section" id="deck05">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 05</p>
+        <p class="deck-name">Wars &amp; Corps — Project 2025 &amp; Corporate Capture</p>
+      </div>
+      <a class="deck-link" href="deck5-wars-and-corps.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">Project 2025 — Mandate for Leadership: The Conservative Promise</p>
+          <p class="source-meta">Heritage Foundation, 2023 · 920-page policy blueprint — full text publicly available</p>
+          <a class="fact-link" href="https://static.project2025.org/2025_MandateForLeadership_FULL.pdf" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">53% Implemented</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">Center for American Progress — Tracking Project 2025 Implementation</p>
+          <p class="source-meta">CAP, 2024–2025 · Monitoring of P2025 policy adoption across federal agencies</p>
+          <a class="fact-link" href="https://www.americanprogress.org/article/project-2025-tracker/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Implementation Data</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">Stockholm International Peace Research Institute — Military Expenditure Database</p>
+          <p class="source-meta">SIPRI, 2024 · Global military spending by nation</p>
+          <a class="fact-link" href="https://www.sipri.org/databases/milex" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Military Industrial</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">OpenSecrets — Defense Industry Lobbying and Campaign Contributions</p>
+          <p class="source-meta">OpenSecrets, 2024 · Defense contractor political spending</p>
+          <a class="fact-link" href="https://www.opensecrets.org/industries/indus.php?ind=D" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Corporate Capture</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 06 -->
+  <div class="deck-section" id="deck06">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 06</p>
+        <p class="deck-name">The Social Experiment — Social Media, AI &amp; Addiction by Design</p>
+      </div>
+      <a class="deck-link" href="deck6-social-experiment.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">FTC — Consumer Sentinel Network Data Book 2024</p>
+          <p class="source-meta">Federal Trade Commission, 2024 · $16.6 billion in online fraud losses</p>
+          <a class="fact-link" href="https://www.ftc.gov/sentinel" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">$16.6B Fraud</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">Meta Internal Research — Instagram Body Image (Wall Street Journal, 2021)</p>
+          <p class="source-meta">WSJ / leaked Meta documents, 2021 · 40% of users reported feeling "unattractive" after Instagram use</p>
+          <a class="fact-link" href="https://www.wsj.com/articles/facebook-knows-instagram-is-toxic-for-teen-girls-company-documents-show-11631620739" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Body Image Data</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">Surgeon General's Advisory — Social Media and Youth Mental Health</p>
+          <p class="source-meta">U.S. Surgeon General, 2023 · Official advisory on social media harms to adolescents</p>
+          <a class="fact-link" href="https://www.hhs.gov/surgeongeneral/reports-and-publications/social-media-mental-health/index.html" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Youth Mental Health</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">NCMEC — CyberTipline 2023 Annual Report</p>
+          <p class="source-meta">National Center for Missing &amp; Exploited Children, 2024 · Online child exploitation reporting data</p>
+          <a class="fact-link" href="https://www.missingkids.org/gethelpnow/cybertipline" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Exploitation Data</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 07 -->
+  <div class="deck-section" id="deck07">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 07</p>
+        <p class="deck-name">The Surveillance State — Palantir, DOGE &amp; Who Rules America</p>
+      </div>
+      <a class="deck-link" href="deck7-surveillance-state.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">Pew Research Center — Public Trust in Government: 1958–2024</p>
+          <p class="source-meta">Pew Research, 2024 · Only 17% of Americans trust federal government</p>
+          <a class="fact-link" href="https://www.pewresearch.org/politics/2025/12/04/public-trust-in-government-1958-2025/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">17% Trust Gov.</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">ACLU — What Is FISA Section 702?</p>
+          <p class="source-meta">ACLU, 2024 · Foreign Intelligence Surveillance Act Section 702 surveillance authority</p>
+          <a class="fact-link" href="https://www.aclu.org/issues/national-security/privacy-and-surveillance/section-702" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Section 702</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">EWG / FTC — Data Broker Industry Reports</p>
+          <p class="source-meta">Multiple sources, 2023–2024 · Data broker industry size and practices</p>
+          <a class="fact-link" href="https://www.ftc.gov/reports/data-brokers" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Data Brokers</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">Palantir Technologies — Government Contracts Database (USASpending.gov)</p>
+          <p class="source-meta">USASpending.gov, 2024 · Federal contracts awarded to Palantir Technologies</p>
+          <a class="fact-link" href="https://www.usaspending.gov/recipient/0bf01bad-4f16-ee11-9ae7-001dd804e4b4-P/latest" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Palantir Contracts</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="vol-spacer"></div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- VOL 3: PEACE & WAR                 -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="vol-header" id="vol3">
+    <span class="vol-label">Research Series · Vol. 3</span>
+    <h2 class="vol-title">Peace &amp; War on The American People</h2>
+  </div>
+
+  <!-- DECK 08 -->
+  <div class="deck-section" id="deck08">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 08</p>
+        <p class="deck-name">The Next Generation — War on Children</p>
+      </div>
+      <a class="deck-link" href="deck8-war-on-children.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">CDC — Autism and Developmental Disabilities Monitoring (ADDM) Network 2022</p>
+          <p class="source-meta">CDC, April 2025 · 1 in 31 children diagnosed with autism — 8th consecutive increase since 2000</p>
+          <a class="fact-link" href="https://www.cdc.gov/autism/data-research/index.html" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">1 in 31 Children</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">CDC — Youth Risk Behavior Survey (YRBS) 2023</p>
+          <p class="source-meta">CDC, 2024 · 40% of high schoolers report persistent sadness; 20% seriously considered suicide</p>
+          <a class="fact-link" href="https://www.cdc.gov/yrbs/index.html" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">40% Persistent Sadness</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">NAEP Nation's Report Card — 2024 Long-Term Trend Assessment</p>
+          <p class="source-meta">NCES / NAEP, 2025 · 45% of 12th graders below Basic in math — historic low</p>
+          <a class="fact-link" href="https://www.nationsreportcard.gov/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">45% Below Basic Math</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">CDC / NHANES — Ultra-Processed Food Consumption in Children</p>
+          <p class="source-meta">CDC via AJMC, August 2025 · 62% of children's daily calories from ultra-processed foods</p>
+          <a class="fact-link" href="https://www.ajmc.com/view/children-s-diets-primarily-made-up-of-ultra-processed-foods-finds-cdc" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">62% UPF Calories</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">5</span>
+        <div class="source-body">
+          <p class="source-title">NCMEC — CyberTipline 2023 Annual Report</p>
+          <p class="source-meta">National Center for Missing &amp; Exploited Children, 2024 · 36.2 million reports — up from 1M in 2014</p>
+          <a class="fact-link" href="https://www.missingkids.org/gethelpnow/cybertipline" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">36.2M Reports</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">6</span>
+        <div class="source-body">
+          <p class="source-title">Child Care Aware of America — Child Care at a Standstill 2023</p>
+          <p class="source-meta">Child Care Aware, 2023 · Average annual childcare cost $11,582 — exceeds in-state college tuition</p>
+          <a class="fact-link" href="https://www.childcareaware.org/thechildcarestandstill/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">$11,582/yr Childcare</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">7</span>
+        <div class="source-body">
+          <p class="source-title">Common Sense Media — The Common Sense Census: Media Use by Tweens and Teens 2021</p>
+          <p class="source-meta">Common Sense Media, 2021 · Teens average 8 hrs 39 min daily entertainment screen time</p>
+          <a class="fact-link" href="https://www.commonsensemedia.org/research/the-common-sense-census-media-use-by-tweens-and-teens-2021" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">8hr 39min Screen Time</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">8</span>
+        <div class="source-body">
+          <p class="source-title">American Academy of Pediatrics — Youth Mental Health Crisis Declaration</p>
+          <p class="source-meta">AAP / AACAP / CHA, October 2021 · National emergency declaration in child and adolescent mental health</p>
+          <a class="fact-link" href="https://www.aap.org/en/news-room/news-releases/aap/2021/pediatricians-child-and-adolescent-psychiatrists-and-childrens-hospitals-declare-national-emergency-in-childrens-mental-health/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">National Emergency</span>
+      </li>
+
+      <div class="contested">
+        <p><strong>Contested area:</strong> Autism causation (diagnostic broadening vs. real increase), social media's causal role in mental health decline, and gender-affirming care for minors remain areas of active scientific debate. Sources on all sides are documented in the deck.</p>
+      </div>
+    </ul>
+  </div>
+
+  <!-- DECK 09 -->
+  <div class="deck-section" id="deck09">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 09</p>
+        <p class="deck-name">The Silent Crisis — War on Men</p>
+      </div>
+      <a class="deck-link" href="deck9-war-on-men.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">CDC NCHS Data Brief No. 541 — Changes in Suicide Rates 2022–2023</p>
+          <p class="source-meta">CDC, 2024 · Male suicide rate 22.7/100K vs. 5.9 for women — 3.8x ratio; ~100 men/day</p>
+          <a class="fact-link" href="https://www.cdc.gov/nchs/products/databriefs/db541.htm" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">3.8x Suicide Rate</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">NCES — Degrees Conferred by Sex 2021</p>
+          <p class="source-meta">National Center for Education Statistics, 2022 · Men received 42% of bachelor's degrees — record low</p>
+          <a class="fact-link" href="https://nces.ed.gov/fastfacts/display.asp?id=72" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">42% Degrees</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">BLS — Forty Years of Falling Manufacturing Employment</p>
+          <p class="source-meta">Bureau of Labor Statistics, 2020 · Manufacturing peak 19.5M (1979) to 12.7M (2024) — 6.8M lost</p>
+          <a class="fact-link" href="https://www.bls.gov/opub/btn/volume-9/forty-years-of-falling-manufacturing-employment.htm" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">6.8M Jobs Lost</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">American Perspectives Survey — Men's Friendships (Survey Center on American Life)</p>
+          <p class="source-meta">AEI / Survey Center, 2021 · 15% of men report no close friends — up from 3% in 1990</p>
+          <a class="fact-link" href="https://www.americansurveycenter.org/research/the-state-of-american-friendship-change-challenges-and-loss/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">15% No Close Friends</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">5</span>
+        <div class="source-body">
+          <p class="source-title">Census Bureau — America's Families and Living Arrangements 2023</p>
+          <p class="source-meta">U.S. Census Bureau, 2023 · 19 million children (1 in 4) without a father in the home</p>
+          <a class="fact-link" href="https://www.census.gov/data/tables/2023/demo/families/cps-2023.html" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">19M Kids No Father</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">6</span>
+        <div class="source-body">
+          <p class="source-title">Case &amp; Deaton — Deaths of Despair and the Future of Capitalism (Princeton University Press)</p>
+          <p class="source-meta">Angus Deaton / Anne Case, 2020 · Drug overdose, suicide, alcoholic liver disease driving male mortality</p>
+          <a class="fact-link" href="https://press.princeton.edu/books/hardcover/9780691190785/deaths-of-despair-and-the-future-of-capitalism" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Deaths of Despair</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 10 -->
+  <div class="deck-section" id="deck10">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 10</p>
+        <p class="deck-name">The Persistent Weight — War on Women</p>
+      </div>
+      <a class="deck-link" href="deck10-war-on-women.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">IWPR — National Annual Women's Wage Gap Analysis 2024</p>
+          <p class="source-meta">Institute for Women's Policy Research, 2024 · Women earn 80.9¢ per dollar — lowest since 2016; largest 2-yr decline since 1960s</p>
+          <a class="fact-link" href="https://iwpr.org/iwprs-new-national-annual-womens-wage-gap-analysis-shows-second-consecutive-year-of-decline-2/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">80.9¢ Wage Gap</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">CDC NCHS — Maternal Mortality Rates in the United States, 2023</p>
+          <p class="source-meta">CDC, 2024 · 18.6/100K maternal mortality — Black women 50.3/100K (3.5x white rate)</p>
+          <a class="fact-link" href="https://www.cdc.gov/nchs/data/hestat/maternal-mortality/2023/maternal-mortality-rates-2023.htm" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">3x Peer Nations</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">Milbank Memorial Fund — Impact of Restrictive State Abortion Laws 2025</p>
+          <p class="source-meta">Milbank, 2025 · 59 excess maternal deaths, 478 excess infant deaths in ban states since Dobbs</p>
+          <a class="fact-link" href="https://www.milbank.org/quarterly/opinions/the-impact-of-restrictive-state-abortion-laws-state-of-the-research-evidence-in-2025/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Post-Dobbs Data</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">Sanctuary for Families — Femicide Epidemic Data</p>
+          <p class="source-meta">Sanctuary for Families, 2024 · U.S. accounts for 70% of female homicides among 25 high-income nations</p>
+          <a class="fact-link" href="https://sanctuaryforfamilies.org/femicide-epidemic/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">70% Femicides</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">5</span>
+        <div class="source-body">
+          <p class="source-title">RAINN — Sexual Violence Statistics</p>
+          <p class="source-meta">RAINN / BJS, 2024 · Of every 1,000 sexual assaults: 310 reported, 50 arrests, 25 incarcerations</p>
+          <a class="fact-link" href="https://rainn.org/statistics/criminal-justice-system" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">2.5% Accountability</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">6</span>
+        <div class="source-body">
+          <p class="source-title">IWPR — Black Women's Wage Gap Fact Sheet 2024</p>
+          <p class="source-meta">IWPR, 2024 · Black women earn 70¢ per white male dollar; Latina women 58¢; parity not until 2227</p>
+          <a class="fact-link" href="https://iwpr.org/wp-content/uploads/2024/07/Black-Women-Wage-Gap-Fact-Sheet-2024.pdf" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">58¢ / 70¢ Gap</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 11 -->
+  <div class="deck-section" id="deck11">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 11</p>
+        <p class="deck-name">Why These Programs Matter — Music, Arts &amp; History</p>
+      </div>
+      <a class="deck-link" href="deck11-music-arts-history.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">Bureau of Economic Analysis / NEA — Arts &amp; Cultural Production Satellite Account 2023</p>
+          <p class="source-meta">BEA / NEA, April 2025 · Arts contribute $1.2 trillion (4.2% of GDP), growing 6.6% vs 2.9% overall</p>
+          <a class="fact-link" href="https://www.arts.gov/impact/research/arts-data-profile-series/adp-31" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">$1.2T GDP</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">U.S. Department of Education — The Arts and Education</p>
+          <p class="source-meta">DOE, 2012 · 90.2% graduation rate with 4 years arts vs. 72.9% without</p>
+          <a class="fact-link" href="https://www.ed.gov/about/offices/list/oii/artsed/index.html" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">90.2% Grad Rate</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">American Academy of Arts &amp; Sciences — Reinvesting in Arts Education 2011</p>
+          <p class="source-meta">AAAS, 2011 · Black students: 49% reduction in arts access; Hispanic: 40%; low-income (no HS parent): 77%</p>
+          <a class="fact-link" href="https://www.amacad.org/publication/reinvesting-arts-education" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">49% / 77% Cut</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">Institute for Citizens &amp; Scholars — Civic Literacy Report</p>
+          <p class="source-meta">ICS, 2018 · Only 36% of Americans can pass the U.S. citizenship test; 19% under 45</p>
+          <a class="fact-link" href="https://citizensandscholars.org/resource/civic-literacy-report/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">36% Pass Civics</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">5</span>
+        <div class="source-body">
+          <p class="source-title">PEN America — Banned in the USA: The Growing Movement to Censor Books</p>
+          <p class="source-meta">PEN America, 2024–2025 · ~23,000 book bans across 45 states since 2021; 10,000+ in 2023–24</p>
+          <a class="fact-link" href="https://pen.org/book-bans/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">23,000 Book Bans</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">6</span>
+        <div class="source-body">
+          <p class="source-title">Journal of Neuroscience — Music Training and Brain Development (Hyde et al.)</p>
+          <p class="source-meta">Journal of Neuroscience, 2009 · Structural brain changes after 15 months of music training in children</p>
+          <a class="fact-link" href="https://www.jneurosci.org/content/29/10/3019" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Brain Development</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">7</span>
+        <div class="source-body">
+          <p class="source-title">Gallup — Confidence in Institutions 2023</p>
+          <p class="source-meta">Gallup, 2023 · Average institutional confidence hit all-time low of 26%; Congress at 7%</p>
+          <a class="fact-link" href="https://news.gallup.com/poll/508169/historically-low-faith-institutions-continues.aspx" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">7% Congress Trust</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DECK 12 -->
+  <div class="deck-section" id="deck12">
+    <div class="deck-header">
+      <div>
+        <p class="deck-num">Deck 12</p>
+        <p class="deck-name">Who Gets to Define Family? — The American Family Unit</p>
+      </div>
+      <a class="deck-link" href="deck12-family-unit.html">Open Deck ↗</a>
+    </div>
+    <ul class="source-list">
+      <li class="source-item">
+        <span class="source-num">1</span>
+        <div class="source-body">
+          <p class="source-title">Project 2025 — Mandate for Leadership: The Conservative Promise (Full Text)</p>
+          <p class="source-meta">Heritage Foundation, 2023 · Full 920-page document — family policy on pp. 4, 451, 486</p>
+          <a class="fact-link" href="https://static.project2025.org/2025_MandateForLeadership_FULL.pdf" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">5–7% "Ideal"</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">2</span>
+        <div class="source-body">
+          <p class="source-title">Heritage Foundation — Saving America by Saving the Family (2026)</p>
+          <p class="source-meta">Heritage Foundation, January 2026 · 168-page report on "restoring" family structure</p>
+          <a class="fact-link" href="https://www.heritage.org/marriage-and-family/report/saving-america-saving-the-family-foundation-the-next-250-years" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Policy Language</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">3</span>
+        <div class="source-body">
+          <p class="source-title">BLS — Employment Characteristics of Families 2024</p>
+          <p class="source-meta">Bureau of Labor Statistics, 2024 · 72.3% of married mothers in labor force; both parents work in 66% of married-couple families</p>
+          <a class="fact-link" href="https://www.bls.gov/news.release/famee.htm" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">72.3% Mothers Work</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">4</span>
+        <div class="source-body">
+          <p class="source-title">CDC NHSR Report No. 71 — Fathers' Involvement with Their Children</p>
+          <p class="source-meta">CDC / NCHS, 2013 · 70% of Black fathers in daily care vs. 60% White, 45% Hispanic</p>
+          <a class="fact-link" href="https://www.cdc.gov/nchs/data/nhsr/nhsr071.pdf" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">Black Father Data</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">5</span>
+        <div class="source-body">
+          <p class="source-title">Pew Research — Almost 1 in 5 Stay-at-Home Parents Are Dads</p>
+          <p class="source-meta">Pew Research, August 2023 · 18% of stay-at-home parents are fathers — up from 11% in 1989</p>
+          <a class="fact-link" href="https://www.pewresearch.org/short-reads/2023/08/03/almost-1-in-5-stay-at-home-parents-in-the-us-are-dads/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">18% SAH Dads</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">6</span>
+        <div class="source-body">
+          <p class="source-title">Pew Research — Adults Without Kids 2024</p>
+          <p class="source-meta">Pew Research, July 2024 · 47% of under-50 adults without children unlikely to ever have kids — up 10pts in 5 years</p>
+          <a class="fact-link" href="https://www.pewresearch.org/social-trends/2024/07/25/the-experiences-of-u-s-adults-who-dont-have-children/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">47% Childfree</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">7</span>
+        <div class="source-body">
+          <p class="source-title">CDC — U.S. Fertility Rate 2024</p>
+          <p class="source-meta">CDC / NCHS, 2025 · U.S. total fertility rate hit record low of 1.599 in 2024</p>
+          <a class="fact-link" href="https://www.cdc.gov/nchs/nvss/births.htm" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">1.599 TFR Record Low</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">8</span>
+        <div class="source-body">
+          <p class="source-title">Cornell University — What Does Scholarly Research Say About Wellbeing of Children with Gay/Lesbian Parents?</p>
+          <p class="source-meta">Cornell "What We Know" Project, 2017 · 75 of 79 studies (95%) find no disadvantage for children of same-sex parents</p>
+          <a class="fact-link" href="https://whatweknow.inequality.cornell.edu/topics/lgbt-equality/what-does-the-scholarly-research-say-about-the-wellbeing-of-children-with-gay-or-lesbian-parents/" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">95% No Disadvantage</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">9</span>
+        <div class="source-body">
+          <p class="source-title">UNICEF Innocenti — Report Card 18: Child Wellbeing Rankings</p>
+          <p class="source-meta">UNICEF, 2023 · U.S. ranks 36th of 38 wealthy nations in child wellbeing</p>
+          <a class="fact-link" href="https://www.unicef-irc.org/publications/pdf/Report-Card-18.pdf" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">36th of 38</span>
+      </li>
+      <li class="source-item">
+        <span class="source-num">10</span>
+        <div class="source-body">
+          <p class="source-title">Gallup — Moral Acceptability of Polygamy (Annual Values and Beliefs Survey)</p>
+          <p class="source-meta">Gallup, 2003–2025 · Acceptability rose from 5% (2006) to 23% (2022) — one of Gallup's largest-ever single-issue shifts</p>
+          <a class="fact-link" href="https://news.gallup.com/poll/393515/americans-say-birth-control-divorce-morally-acceptable.aspx" target="_blank" rel="noopener">↗ Fact Check</a>
+        </div>
+        <span class="source-stat">5% → 23% Shift</span>
+      </li>
+
+      <div class="contested">
+        <p><strong>Contested areas:</strong> Marriage vs. income as independent predictors of child outcomes; childfree happiness research (contested across multiple studies); manosphere causal impact data (research described as "in its infancy"); platonic co-parenting outcomes (only one empirical study, n=23).</p>
+      </div>
+    </ul>
+  </div>
+
+  <div class="back-top"><a href="#top">↑ Back to top</a></div>
+
+  <!-- UNIVERSAL FOOTER -->
+  <div class="uni-footer">
+    <div class="uni-footer-grid">
+      <div class="uni-footer-box">
+        <span class="uni-footer-box-title">📂 Source Bucket</span>
+        <p>You're in it. Every ↗ Fact Check link above goes directly to the original source — no middlemen, no aggregators.</p>
+      </div>
+      <div class="uni-footer-box">
+        <span class="uni-footer-box-title">🔍 How to Fact Check</span>
+        <p>Click any <strong>↗ Fact Check</strong> link. If it 404s, search the title + institution name — government sites reorganize often. The data still exists.</p>
+      </div>
+      <div class="uni-footer-box">
+        <span class="uni-footer-box-title">⚠️ See an Error?</span>
+        <p>Corrections are welcome. Email <span class="error-email"></span> with the deck name, the stat, and your source. All corrections reviewed before publishing.</p>
+      </div>
+    </div>
+    <div class="uni-footer-bottom">
+      <p>The Convergence Project · Sources current through March 2026 · <a href="index.html" style="color:var(--gold);text-decoration:none;">← Return to Library</a></p>
+    </div>
+  </div>
+
+  <script>
+  var u='jaeeezy', d='pm.me', email=u+'\u0040'+d;
+  document.querySelectorAll('.error-email, .submit-email').forEach(function(el){
+    var a=document.createElement('a');
+    a.href='mailto:'+email; a.textContent=email;
+    a.style.color='var(--gold)';
+    el.appendChild(a);
+  });
+  </script>
+
+  <div class="site-footer">
+    <p>Sources current through March 2026 · Updated as new research is published · <a class="submit-email" style="color:var(--gold);text-decoration:none;cursor:pointer;">Submit a correction or addition →</a>
+    </p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Deck 6: The Social Experiment — A Spoken Space</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96A;--olive:#6B7C47;--tan:#C2A87E;
+  --brown:#5C3D2E;--black:#0D0D0D;--b2:#141414;--b3:#1C1C1C;
+  --cream:#F0EAD6;--acc:#D4A017;--acc-l:#F0C040;--muted:#666;
+  --warn:#C0392B;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--black);color:var(--cream);font-family:'Raleway',sans-serif;overflow:hidden;}
+#ss{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:44px 28px 88px;opacity:0;transform:translateX(70px);transition:opacity .5s,transform .5s;pointer-events:none;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.out{opacity:0;transform:translateX(-70px);}
+#pb{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--warn),var(--acc));transition:width .4s;z-index:200;}
+#ct{position:fixed;top:14px;right:18px;font-size:10px;letter-spacing:3px;color:var(--muted);z-index:200;text-transform:uppercase;}
+#nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;z-index:200;}
+.nb{width:42px;height:42px;border-radius:50%;border:1px solid var(--brown);background:rgba(14,14,14,.95);color:var(--tan);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.nb:hover{border-color:var(--acc);color:var(--acc);}
+.nb:disabled{opacity:.2;cursor:default;}
+#dots{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--brown);cursor:pointer;transition:all .3s;flex-shrink:0;}
+.dot.active{background:var(--acc);width:18px;border-radius:3px;}
+.ey{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--acc);margin-bottom:8px;}
+.st{font-family:'Cinzel',serif;font-size:clamp(18px,3.5vw,30px);font-weight:700;line-height:1.2;color:var(--gold);}
+.ss{font-family:'Crimson Text',serif;font-size:clamp(13px,1.8vw,15px);color:var(--tan);line-height:1.65;margin-top:6px;}
+.dv{width:36px;height:2px;background:linear-gradient(90deg,var(--acc),transparent);margin:8px 0;}
+.si{width:100%;max-width:820px;display:flex;flex-direction:column;gap:14px;}
+.cw{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:14px;}
+canvas{max-height:240px!important;}
+.ca{padding:12px 16px;border-radius:6px;border-left:3px solid var(--acc);background:var(--b3);font-size:clamp(11px,1.6vw,13px);line-height:1.6;color:var(--cream);}
+.ca.red{border-left-color:var(--warn);}
+.ca.olive{border-left-color:var(--olive);}
+.ca strong{color:var(--acc-l);}
+.ca.red strong{color:#E74C3C;}
+.ca.olive strong{color:#8FA05A;}
+.src{font-size:10px;color:#383838;font-style:italic;text-align:right;margin-top:2px;}
+#s0{text-align:center;}
+#s0::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 40%,rgba(212,160,23,.07) 0%,transparent 70%);pointer-events:none;}
+.mt{font-family:'Cinzel',serif;font-size:clamp(28px,6vw,64px);font-weight:900;color:var(--acc);line-height:.9;text-shadow:0 0 60px rgba(212,160,23,.2);}
+.mt span{color:var(--gold);display:block;font-size:.45em;margin-top:12px;letter-spacing:2px;}
+.sc-title{font-family:'Crimson Text',serif;font-style:italic;font-size:clamp(13px,2vw,17px);color:var(--tan);max-width:520px;margin:22px auto 0;line-height:1.7;}
+.sc-title strong{color:var(--gold-l);font-style:normal;}
+.bf{position:absolute;bottom:90px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--brown);}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:820px;}
+.sc2{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:14px;text-align:center;}
+.sn{font-family:'Cinzel',serif;font-size:clamp(20px,3.5vw,32px);color:var(--acc-l);display:block;line-height:1;}
+.sl{font-size:11px;color:var(--tan);margin-top:6px;line-height:1.4;}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:820px;}
+.card{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:16px;}
+.ct-card{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:6px;}
+.ch-card{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin-bottom:8px;}
+.cb-card{font-size:12px;color:var(--tan);line-height:1.5;}
+.cb-card strong{color:var(--cream);}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;width:100%;max-width:820px;}
+.ac{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:16px;}
+.at{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--olive);margin-bottom:8px;}
+.ah{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin-bottom:8px;}
+.al{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.al li{font-size:12px;color:var(--tan);padding-left:14px;position:relative;line-height:1.4;}
+.al li::before{content:'→';position:absolute;left:0;color:var(--olive);font-size:11px;}
+.cq{font-family:'Cinzel',serif;font-size:clamp(16px,3.5vw,26px);color:var(--gold);max-width:560px;line-height:1.4;margin:0 auto 20px;}
+.cb-c{font-family:'Crimson Text',serif;font-style:italic;font-size:clamp(13px,1.8vw,16px);color:var(--tan);max-width:460px;line-height:1.7;margin:0 auto 24px;}
+.cc{display:inline-block;padding:11px 28px;border:1px solid var(--acc);border-radius:2px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);text-decoration:none;transition:all .2s;}
+.cc:hover{background:var(--acc);color:var(--black);}
+@media(max-width:600px){.slide{padding:20px 14px 88px;}canvas{max-height:180px!important;}.g2{grid-template-columns:1fr;}.ag{grid-template-columns:1fr;}.sg{grid-template-columns:1fr 1fr;}.si{gap:10px;}}
+@media(max-height:620px){canvas{max-height:150px!important;}.slide{padding:16px 16px 80px;}.si{gap:8px;}}
+</style>
+</head>
+<body>
+<div id="pb"></div>
+<div id="ct">1 / 13</div>
+<div id="ss">
+
+<!-- S0 TITLE -->
+<div class="slide active" id="s0">
+  <p class="ey" style="position:relative;">A Spoken Space — Research Series Vol. 3 · Deck 6 of 7</p>
+  <h1 class="mt">THE SOCIAL<br>EXPERIMENT<span>Nobody Asked Us If We Wanted to Participate</span></h1>
+  <p class="sc-title">They designed addiction. They measured the harm. They chose profit.<br><strong>The data on what social media and AI are doing to us is peer-reviewed and damning.</strong></p>
+  <p class="bf">Impact Poet · Ms. JuruDaWise · the-convergence-project.netlify.app</p>
+</div>
+
+<!-- S1 THE NUMBERS -->
+<div class="slide" id="s1">
+  <div class="si">
+    <div><p class="ey">Chapter 1</p><h2 class="st">The Scale of What We're Living In</h2><div class="dv"></div>
+    <p class="ss">Social media isn't a tool people use. For billions of people it has become the primary lens through which they experience reality, news, relationships, and self-worth. The data on time and access is staggering.</p></div>
+    <div class="sg">
+      <div class="sc2"><span class="sn">8h 39m</span><p class="sl">Average daily media use for teens ages 13-18</p></div>
+      <div class="sc2"><span class="sn">96–144x</span><p class="sl">Times the average American checks their phone per day</p></div>
+      <div class="sc2"><span class="sn">47 sec</span><p class="sl">Average attention span on a screen — down from 150 seconds in 2004</p></div>
+    </div>
+    <div class="ca"><strong>The youngest are most exposed:</strong> <strong>95% of teens 13-17</strong> use social media with more than a third using it "almost constantly" (Surgeon General Advisory 2023). <strong>40% of children ages 8-12</strong> use social media despite minimum age requirements of 13. Tweens average <strong>5 hours 33 minutes</strong> of daily screen time. After a phone interruption it takes <strong>23 minutes to regain focus</strong>.</div>
+    <p class="src">Source: US Surgeon General Advisory 2023 · Dr. Gloria Mark UC Irvine · DemandSage 2026 · Backlinko</p>
+  </div>
+</div>
+
+<!-- S2 MENTAL HEALTH -->
+<div class="slide" id="s2">
+  <div class="si">
+    <div><p class="ey">Chapter 2 — The Research</p><h2 class="st">What It's Doing to Mental Health</h2><div class="dv"></div>
+    <p class="ss">182 peer-reviewed studies covering over 1.1 million subjects. A U.S. Surgeon General warning. Two rounds of Congressional testimony. The signal is clear even if the causal debate continues.</p></div>
+    <div class="cw"><canvas id="c2"></canvas></div>
+    <div class="ca red"><strong>Facebook's own internal research (leaked by Frances Haugen):</strong> <strong>32% of teen girls</strong> who felt bad about their bodies said Instagram made it worse. <strong>17% said eating disorders worsened</strong> on Instagram. <strong>13.5% of UK teen girls</strong> said Instagram intensified suicidal thoughts. Internal slides said: "We make body image issues worse for one in three teen girls." This was known. They chose not to fix it.</div>
+    <p class="src">Source: Journal of Affective Disorders 2024 (n=1,169,396) · US Surgeon General 2023 · Facebook internal leaks via Frances Haugen</p>
+  </div>
+</div>
+
+<!-- S3 KIDS AND SUICIDE -->
+<div class="slide" id="s3">
+  <div class="si">
+    <div><p class="ey">Chapter 3 — The Hardest Data</p><h2 class="st">Youth Suicide and Social Media</h2><div class="dv"></div>
+    <p class="ss">Correlation is not causation — and researchers are still fighting over the causal link. But the numbers on the ground are not abstract. Children are in crisis at measurable rates, and the timeline matches.</p></div>
+    <div class="cw"><canvas id="c3"></canvas></div>
+    <div class="ca red"><strong>March 2026 — Landmark ruling:</strong> A jury found <strong>Meta liable for child sexual exploitation</strong>. A separate California trial found Meta and YouTube <strong>liable for intentionally designing addictive platforms</strong> that injured a young woman's mental health. Whistleblower Arturo Béjar testified (2023): <strong>51% of Instagram users</strong> reported a harmful experience in the prior week. Of those who reported harmful posts, only <strong>2%</strong> had content removed.</div>
+    <p class="src">Source: CDC Youth Risk Behavior Survey · ACHI · Social Media Victims Law Center · CNN March 2026 ruling</p>
+  </div>
+</div>
+
+<!-- S4 THE ALGORITHM -->
+<div class="slide" id="s4">
+  <div class="si">
+    <div><p class="ey">Chapter 4 — The Design Was Intentional</p><h2 class="st">The Algorithm Is Optimized for Outrage</h2><div class="dv"></div>
+    <p class="ss">This is not a side effect. Internal documents from Facebook, Instagram, and YouTube reveal that platforms knew their algorithms amplified harmful content — and chose engagement over wellbeing.</p></div>
+    <div class="g2" style="width:100%;max-width:820px;">
+      <div class="card" style="border-left:3px solid var(--warn);">
+        <p class="ct-card" style="color:var(--warn);">Frances Haugen 2021</p>
+        <p class="ch-card">Facebook Knew</p>
+        <p class="cb-card">Internal research confirmed "content that is hateful, divisive, and polarizing" drives the most engagement. Facebook dissolved its Civic Integrity team after the 2020 election. The algorithm was not an accident — it was the product.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--acc);">
+        <p class="ct-card" style="color:var(--acc);">Doom Scroll Science</p>
+        <p class="ch-card">Variable Ratio Reinforcement</p>
+        <p class="cb-card">Each scroll releases dopamine via the same mechanism as slot machines. Continuous distressing content activates cortisol and adrenaline, keeping the amygdala hyperactivated. Blue light suppresses melatonin. The architecture of the feed is neurologically hostile.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--olive);">
+        <p class="ct-card" style="color:#8FA05A;">Stock Market</p>
+        <p class="ch-card">Platforms Move Markets</p>
+        <p class="cb-card">Trump's April 9, 2025 Truth Social post "THIS IS A GREAT TIME TO BUY!!!" preceded a tariff pause by hours — the S&P gained <strong>~$4 trillion</strong> in value (9.5%). Musk's tweets have moved Dogecoin <strong>1,500%</strong> and triggered SEC enforcement.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <p class="ct-card" style="color:var(--gold);">The Influencer Economy</p>
+        <p class="ch-card">$33 Billion Experiment</p>
+        <p class="cb-card">The influencer market grew from $1.7B (2016) to <strong>$33 billion (2025)</strong>. Research shows parasocial creator relationships fulfill emotional needs <em>more effectively</em> than in-person acquaintances — "humans have not evolved to differentiate real from imagined friendships."</p>
+      </div>
+    </div>
+    <p class="src">Source: CBS News / Haugen · UCSD · PBS · Bloomberg · Scientific Reports Nature 2024</p>
+  </div>
+</div>
+
+<!-- S5 SCAM EPIDEMIC -->
+<div class="slide" id="s5">
+  <div class="si">
+    <div><p class="ey">Chapter 5 — The Scam Economy</p><h2 class="st">$16.6 Billion Stolen Online in One Year</h2><div class="dv"></div>
+    <p class="ss">The FBI's Internet Crime Complaint Center reported $16.6 billion in losses in 2024 — a 33% increase from the prior year. The FTC estimates actual losses could be as high as $195.9 billion when unreported fraud is included.</p></div>
+    <div class="cw"><canvas id="c5"></canvas></div>
+    <div class="ca red"><strong>Who gets hit hardest:</strong> Adults over 60 lost <strong>~$4.8 billion</strong> in 2024 — an 83% increase year-over-year. Pig butchering scams alone saw <strong>$75 billion</strong> in crypto flows tracked to scammer addresses (2020-2024). The UN estimates <strong>200,000+ people</strong> are held in scam compounds in Southeast Asia as trafficking victims. AI now allows voice cloning from <strong>3 seconds of audio</strong> with 85% accuracy — deepfake fraud losses projected at <strong>$40 billion by 2027</strong>.</div>
+    <p class="src">Source: FBI IC3 2024 · FTC 2025 · McKnight's Senior Living · UT Dallas study · Keepnet Labs 2026</p>
+  </div>
+</div>
+
+<!-- S6 DEEPFAKES -->
+<div class="slide" id="s6">
+  <div class="si">
+    <div><p class="ey">Chapter 6 — The Reality Crisis</p><h2 class="st">Deepfakes: 550% Surge in Two Years</h2><div class="dv"></div>
+    <p class="ss">AI-generated content has moved from novelty to weapon. The scale of deepfake production — and the harm categories it's driving — is accelerating faster than any regulatory response.</p></div>
+    <div class="cw"><canvas id="c6"></canvas></div>
+    <div class="ca red"><strong>The most disturbing surge:</strong> AI-generated child sexual abuse material reported to NCMEC went from 4,700 (2023) to <strong>67,000 (2024)</strong> — a 1,325% increase. AI-generated CSAM videos went from 13 (2024) to <strong>3,443 (2025)</strong> — a 26,385% increase. <strong>96-98% of all deepfake content</strong> is pornographic and overwhelmingly targets women. Political deepfakes were documented in <strong>38 countries</strong> during elections between 2023-2024. Only <strong>0.1% of participants</strong> in a 2025 study correctly identified all fake and real media.</div>
+    <p class="src">Source: Keepnet Labs 2026 · UNESCO · NCMEC / Childlight · IWF 2026 · iProov 2025</p>
+  </div>
+</div>
+
+<!-- S7 AI LAYOFFS -->
+<div class="slide" id="s7">
+  <div class="si">
+    <div><p class="ey">Chapter 7 — AI at Work</p><h2 class="st">The Layoff Wave Nobody Is Being Straight About</h2><div class="dv"></div>
+    <p class="ss">Companies are citing AI in layoffs at an accelerating rate. The honest version: many layoffs attributed to AI are actually about cost-cutting dressed up in tech language — but the displacement is real either way.</p></div>
+    <div class="cw"><canvas id="c7"></canvas></div>
+    <div class="ca"><strong>The CFO survey data (Duke, 2025):</strong> <strong>44% of CFOs</strong> plan AI-related cuts, with an estimated <strong>~502,000 roles</strong> expected lost in 2026. Jack Dorsey (Block) cut <strong>4,000 jobs (40%)</strong> of workforce in February 2026: "Intelligence tools have changed what it means to build and run a company." Amazon cut <strong>30,000+ corporate roles</strong> since 2023. Media lost <strong>3,434+ journalism jobs</strong> in 2025. Critical caveat: Harvard Business Review found companies are "laying off because of AI's <em>potential</em> — not its performance." New York State found <strong>zero of 160 companies</strong> checked the AI box on layoff disclosure forms.</div>
+    <p class="src">Source: Challenger Gray · Duke CFO Survey · Fortune March 2026 · Press Gazette · Harvard Business Review · CBS News 2026</p>
+  </div>
+</div>
+
+<!-- S8 LONELINESS -->
+<div class="slide" id="s8">
+  <div class="si">
+    <div><p class="ey">Chapter 8 — The Paradox</p><h2 class="st">The Most Connected Generation Is the Loneliest</h2><div class="dv"></div>
+    <p class="ss">The Surgeon General declared loneliness a national epidemic. Young people have more "connections" than any generation in history and less genuine human contact. The body is paying for it.</p></div>
+    <div class="cw"><canvas id="c8"></canvas></div>
+    <div class="ca olive"><strong>The good news:</strong> People are waking up. <strong>56%</strong> of people consider themselves addicted to their devices. <strong>44% of Gen Z</strong> intentionally reduced screen time in the past 6 months. Vinyl records have seen <strong>17 consecutive years of growth</strong>. Live Nation reported its <strong>biggest concert attendance year ever</strong> in 2025. Running clubs, book clubs, and community organizations are surging. Gen Z is driving what researchers are calling a <strong>Social Renaissance</strong> — people want real connection again and are actively seeking it.</div>
+    <p class="src">Source: US Surgeon General 2023 · CivicScience · Fortune Feb 2026 · Reach Out Recovery 2026 · Tunheim research</p>
+  </div>
+</div>
+
+<!-- S9 THE PATH FORWARD -->
+<div class="slide" id="s9">
+  <div class="si" style="max-width:860px;">
+    <div><p class="ey">Chapter 9</p><h2 class="st">A Balanced Path Through the Digital Age</h2><div class="dv"></div>
+    <p class="ss">AI integration may be here to stay. The question is whether we steer it or get steered. Here's what protecting yourself and your community actually looks like.</p></div>
+    <div class="ag">
+      <div class="ac">
+        <p class="at">For You</p><p class="ah">Protect Your Mind</p>
+        <ul class="al">
+          <li>Set screen time limits — the research is unambiguous that reducing social media use reduces depression symptoms</li>
+          <li>Doom scrolling activates your threat response — your brain cannot tell news from predator. Protect your nervous system.</li>
+          <li>Phone-free meals and first/last hours of day are measurably protective</li>
+          <li>Know the difference between a parasocial relationship and a real one</li>
+        </ul>
+      </div>
+      <div class="ac">
+        <p class="at">For Kids</p><p class="ah">Set the Rules Early</p>
+        <ul class="al">
+          <li>Australia banned under-16s from social media (December 2025) — 31 U.S. states now require school phone bans</li>
+          <li>No phones in bedrooms. Blue light at night suppresses melatonin — this is physiology, not preference.</li>
+          <li>The algorithm shows children extreme content to maximize engagement. Supervise and discuss.</li>
+          <li>Child influencer labor laws barely exist — know what your kids are consuming and creating</li>
+        </ul>
+      </div>
+      <div class="ac">
+        <p class="at">Big Picture</p><p class="ah">Demand Accountability</p>
+        <ul class="al">
+          <li>Support the Kids Online Safety Act and data privacy legislation</li>
+          <li>Demand warning labels on social media platforms — the Surgeon General called for them</li>
+          <li>Support the EU AI Act model for transparency and algorithmic accountability</li>
+          <li>Join the analog renaissance — vinyl, live music, in-person community, real conversation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 CLOSE -->
+<div class="slide" id="s10" style="text-align:center;">
+  <p class="ey" style="margin-bottom:20px;">A Spoken Space — The Convergence Research Series</p>
+  <p class="cq">"They built the most powerful<br>attention machine in human history<br>and aimed it at children.<br>Then they called it a platform."</p>
+  <p class="cb-c">Deck 6 of 7. The final deck connects the surveillance infrastructure to all of this — and asks who really rules America when we're not looking.</p>
+  <a class="cc" href="https://the-convergence-project.netlify.app" target="_blank">The Convergence Project</a>
+  <p style="margin-top:28px;font-size:11px;letter-spacing:2px;color:var(--brown);text-transform:uppercase;">Off Mic Podcast · Impact Poet · Ms. JuruDaWise</p>
+</div>
+
+</div>
+<nav id="nav">
+  <button class="nb" id="bp" disabled>&#8592;</button>
+  <div id="dots"></div>
+  <button class="nb" id="bn">&#8594;</button>
+</nav>
+<script>
+const TOTAL=11;let cur=0,anim=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));dotsEl.appendChild(d);}
+function upd(){document.getElementById('pb').style.width=((cur+1)/TOTAL*100)+'%';document.getElementById('ct').textContent=(cur+1)+' / '+TOTAL;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));document.getElementById('bp').disabled=cur===0;document.getElementById('bn').disabled=cur===TOTAL-1;}
+function goTo(idx){if(anim||idx===cur||idx<0||idx>=TOTAL)return;anim=true;const o=document.getElementById('s'+cur),n=document.getElementById('s'+idx);o.classList.add('out');o.classList.remove('active');setTimeout(()=>{o.classList.remove('out');n.classList.add('active');cur=idx;upd();drawChart(cur);anim=false;},420);}
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')goTo(cur+1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')goTo(cur-1);});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goTo(dx<0?cur+1:cur-1);},{passive:true});
+const C={gold:'#C9A84C',olive:'#6B7C47',tan:'#C2A87E',brown:'#5C3D2E',acc:'#D4A017',accL:'#F0C040',warn:'#C0392B',grid:'rgba(255,255,255,0.06)',tick:'#888'};
+const base={responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:C.tick,font:{family:'Raleway',size:11},boxWidth:12}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.acc,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}},scales:{x:{grid:{color:C.grid},ticks:{color:C.tick,font:{family:'Raleway',size:10}}},y:{grid:{color:C.grid},ticks:{color:C.tick,font:{family:'Raleway',size:10}}}}};
+const charts={};
+function drawChart(idx){
+  if(charts[idx])return;
+  if(idx===2){charts[2]=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['Problematic use\n→ anxiety (r=)','Teen girls with\nbody image harm %','Teens using\nsocially "constantly" %','3h+/day doubles\ndepression risk (×)','Studies in\nmeta-analysis'],datasets:[{label:'Social Media Mental Health Data',data:[0.348,32,33,2,182],backgroundColor:[C.warn,C.acc,C.gold,C.olive,C.brown],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}}}});}
+  if(idx===3){charts[3]=new Chart(document.getElementById('c3'),{type:'line',data:{labels:['2011','2013','2015','2017','2019','2021','2024'],datasets:[{label:'% HS students seriously considering suicide',data:[16,17,18,17,19,22,21],borderColor:C.warn,backgroundColor:'rgba(192,57,43,.1)',fill:true,borderWidth:2.5,tension:.3,pointRadius:4,pointBackgroundColor:C.warn},{label:'Female teen suicide rate (indexed)',data:[100,102,115,118,112,120,118],borderColor:C.acc,borderWidth:2,borderDash:[5,4],tension:.3,fill:false,pointRadius:3,pointBackgroundColor:C.acc}]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+(v>50?'':' %')}}}}});}
+  if(idx===5){charts[5]=new Chart(document.getElementById('c5'),{type:'bar',data:{labels:['FBI total\nlosses 2024 ($B)','Elder fraud\nlosses 2024 ($B)','FTC est. actual\nlosses ($B)','Pig butchering\ncrypto flows ($B)','Deepfake fraud\n2027 projected ($B)'],datasets:[{label:'Online Fraud Scale',data:[16.6,4.8,195.9,75,40],backgroundColor:[C.warn,C.acc,C.olive,C.brown,C.gold],borderRadius:5}]},options:{...base,indexAxis:'y',plugins:{...base.plugins,legend:{display:false}}}});}
+  if(idx===6){charts[6]=new Chart(document.getElementById('c6'),{type:'bar',data:{labels:['Deepfake files\n2023 (thousands)','Deepfake files\n2025 (thousands)','AI CSAM reports\nNCMEC 2023','AI CSAM reports\nNCMEC 2024','% deepfakes\npornographic'],datasets:[{label:'Deepfake Surge',data:[500,8000,4700,67000,97],backgroundColor:[C.brown,C.warn,C.acc,'#8B0000',C.olive],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}}}});}
+  if(idx===7){charts[7]=new Chart(document.getElementById('c7'),{type:'bar',data:{labels:['AI-cited layoffs\n2025 (est thousands)','CFOs planning\nAI cuts %','Amazon roles\ncut since 2023 (K)','Block layoffs\n% workforce','Journalism\njobs lost 2025'],datasets:[{label:'AI Workforce Impact',data:[55,44,30,40,3.4],backgroundColor:[C.warn,C.acc,C.brown,C.olive,C.gold],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}}}});}
+  if(idx===8){charts[8]=new Chart(document.getElementById('c8'),{type:'radar',data:{labels:['Loneliness\n(adults daily %)','Gen Z\nloneliness %','Youth social\ntime lost %','Device\naddiction %','Screen time\nreduced (Gen Z %)'],datasets:[{label:'The Loneliness Crisis',data:[20,57,70,56,44],borderColor:C.warn,backgroundColor:'rgba(192,57,43,.1)',pointBackgroundColor:C.warn,pointRadius:4},{label:'The Renaissance Response',data:[0,0,0,56,44],borderColor:C.olive,backgroundColor:'rgba(107,124,71,.1)',pointBackgroundColor:C.olive,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:C.tick,font:{family:'Raleway',size:10}}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.acc,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}},scales:{r:{grid:{color:'rgba(255,255,255,0.08)'},pointLabels:{color:C.tan,font:{family:'Raleway',size:10}},ticks:{display:false}}}}});}
+}
+upd();
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid #1a1a1a;">
+  <a href="deck5-wars-and-corps.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">← Deck 05: Gov & Corps</a>
+  <a href="index.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">Library Home</a>
+  <a href="deck7-surveillance-state.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">Deck 07: Surveillance State →</a>
+</div>
+<div style="max-width:900px;margin:0 auto;padding:0 24px 40px;">
+  <div style="border-top:1px solid #1a1a1a;padding-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px;">
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">📂 Source Bucket</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Every stat sourced and hyperlinked. <a href="sources.html" style="color:#C9A84C;text-decoration:none;">Open the Source Bucket →</a></p>
+    </div>
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">🔍 How to Fact Check</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Find this deck in the Source Bucket and click any ↗ Fact Check link — goes straight to the original source.</p>
+    </div>
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">⚠️ See an Error?</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Flag it. Email <span class="err-email"></span> with the deck, stat, and your source.</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){var u='jaeeezy',d='pm\u002eme',e=u+'\u0040'+d;document.querySelectorAll('.err-email').forEach(function(el){var a=document.createElement('a');a.href='mailto:'+e;a.textContent=e;a.style.color='#C9A84C';el.appendChild(a);});})();
+</script>
+</body>
+</html>

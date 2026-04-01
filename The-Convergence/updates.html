@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Updates & Dispatches — The Convergence Project</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0d0d0d;
+      --gold: #c9a84c;
+      --gold-dim: #a07830;
+      --gold-glow: rgba(201,168,76,0.15);
+      --cream: #f0e6d0;
+      --gray: #5a5a5a;
+      --border: rgba(201,168,76,0.25);
+    }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .blog-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 24px 100px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-eyebrow {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: rgba(240,230,208,0.6);
+      margin-bottom: 60px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── FEATURED POST ── */
+    .post-featured {
+      background: linear-gradient(135deg, rgba(201,168,76,0.07) 0%, rgba(13,13,13,0) 60%);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      padding: 48px 44px;
+      margin-bottom: 48px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .post-featured::before {
+      content: '✦';
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 1.4rem;
+      color: var(--gold);
+      opacity: 0.3;
+    }
+
+    .post-featured:hover {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(201,168,76,0.11) 0%, rgba(13,13,13,0) 60%);
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .post-tag {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 4px 12px;
+      border-radius: 2px;
+    }
+
+    .post-tag.founding {
+      background: var(--gold);
+    }
+
+    .post-date {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      color: var(--gray);
+      letter-spacing: 0.1em;
+    }
+
+    .post-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.25;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .post-excerpt {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.1rem;
+      color: rgba(240,230,208,0.78);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    /* ── FULL POST BODY ── */
+    .post-body {
+      margin-top: 12px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .post-body.expanded {
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-body h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 36px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-body h2:first-child { margin-top: 0; }
+
+    .post-body p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.1rem;
+      color: rgba(240,230,208,0.85);
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+
+    .post-body strong {
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    .post-body em {
+      font-style: italic;
+      color: rgba(240,230,208,0.9);
+    }
+
+    .post-body .pull-quote {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--gold);
+      line-height: 1.6;
+      border-left: 3px solid var(--gold);
+      padding: 16px 0 16px 24px;
+      margin: 32px 0;
+    }
+
+    .post-body .contact-block {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+
+    .post-body .contact-block p {
+      margin-bottom: 8px;
+    }
+
+    .post-body .contact-block p:last-child { margin-bottom: 0; }
+
+    .post-body a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold-dim);
+      transition: border-color 0.2s;
+    }
+
+    .post-body a:hover { border-color: var(--gold); }
+
+    .post-body .sign-off {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      color: rgba(240,230,208,0.6);
+      font-size: 1rem;
+    }
+
+    .post-body .hashtags {
+      margin-top: 12px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gold-dim);
+    }
+
+    /* ── READ MORE TOGGLE ── */
+    .read-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: none;
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .read-toggle:hover {
+      background: var(--gold-glow);
+      border-color: var(--gold);
+    }
+
+    .read-toggle .arrow {
+      transition: transform 0.25s ease;
+      font-size: 14px;
+    }
+
+    .read-toggle.open .arrow { transform: rotate(180deg); }
+
+    /* ── COMING SOON POSTS ── */
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .post-card {
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      position: relative;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .post-card.upcoming {
+      opacity: 0.55;
+    }
+
+    .post-card.upcoming::after {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+    }
+
+    .post-card:hover:not(.upcoming) {
+      border-color: var(--gold);
+      background: var(--gold-glow);
+    }
+
+    .post-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 0.03em;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .post-card-desc {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(240,230,208,0.55);
+      line-height: 1.6;
+    }
+
+    /* ── CONTRIBUTE CTA ── */
+    .contribute-bar {
+      margin-top: 64px;
+      padding: 36px 40px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .contribute-bar p {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(240,230,208,0.7);
+      max-width: 520px;
+    }
+
+    .contribute-bar a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 12px 24px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.25s;
+      flex-shrink: 0;
+    }
+
+    .contribute-bar a:hover { background: #dbb85a; }
+
+    /* ── DIVIDER ── */
+    .gold-divider {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 0 48px;
+    }
+
+    /* ── BUY ME A COFFEE ── */
+    .bmc-bar {
+      margin-top: 24px;
+      padding: 32px 40px;
+      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bmc-bar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .bmc-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .bmc-icon {
+      font-size: 2.2rem;
+      flex-shrink: 0;
+    }
+
+    .bmc-text {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .bmc-headline {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+
+    .bmc-sub {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(240,230,208,0.6);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .bmc-btn {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 14px 28px;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.25s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .bmc-btn:hover {
+      background: #dbb85a;
+      transform: translateY(-1px);
+    }
+
+    /* ── LIVE CARD ── */
+    .post-card.live {
+      border-color: rgba(201,168,76,0.5);
+      background: rgba(201,168,76,0.04);
+      cursor: pointer;
+    }
+
+    .post-card.live::after {
+      content: 'Live ↗';
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 3px 8px;
+    }
+
+    .post-card.live .post-card-title { color: var(--gold); }
+    .post-card.live .post-card-desc { color: rgba(240,230,208,0.7); }
+    .post-card.live:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    /* ── INFO SECTIONS ── */
+    .info-section {
+      margin-top: 64px;
+      padding: 40px 44px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+    }
+
+    .info-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-section p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      color: rgba(240,230,208,0.8);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .info-section p:last-child { margin-bottom: 0; }
+
+    .info-section strong { color: var(--cream); }
+
+    .info-steps {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .info-steps li {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      color: rgba(240,230,208,0.8);
+      line-height: 1.75;
+      padding: 10px 0 10px 28px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      position: relative;
+    }
+
+    .info-steps li::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .contributor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .contributor-box {
+      border: 1px solid var(--border);
+      padding: 24px;
+    }
+
+    .contributor-box h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .contributor-box p {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(240,230,208,0.65);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    .contributor-btn {
+      display: inline-block;
+      margin-top: 16px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 10px 20px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .contributor-btn:hover { background: #dbb85a; }
+    .contributor-btn.outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .contributor-btn.outline:hover { background: rgba(201,168,76,0.1); }
+
+    @media (max-width: 600px) {
+      .post-featured { padding: 32px 24px; }
+      .contribute-bar { padding: 28px 24px; }
+      .bmc-bar { padding: 28px 24px; }
+      .info-section { padding: 28px 24px; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .contributor-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── BACK NAV ── */
+    .back-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 24px 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--gold); }
+    .back-btn .chevron { font-size: 14px; transition: transform 0.2s; }
+    .back-btn:hover .chevron { transform: translateX(-3px); }
+
+    /* ── LARGE SCREEN SCALING ── */
+    @media (min-width: 1400px) {
+      .blog-section { max-width: 1100px; }
+      .back-nav { max-width: 1100px; }
+      body { font-size: 20px; }
+    }
+
+    @media (min-width: 1800px) {
+      .blog-section { max-width: 1300px; }
+      .back-nav { max-width: 1300px; }
+      body { font-size: 22px; }
+      .section-title { font-size: 4rem; }
+    }
+
+    @media (min-width: 2400px) {
+      .blog-section { max-width: 1600px; }
+      .back-nav { max-width: 1600px; }
+      body { font-size: 24px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a class="back-btn" href="index.html">
+    <span class="chevron">←</span>
+    <span>Back to The Convergence Project</span>
+  </a>
+</nav>
+
+<section class="blog-section">
+
+  <p class="section-eyebrow">Dispatches from the library</p>
+  <h1 class="section-title">Updates & Field Notes</h1>
+  <p class="section-subtitle">Where the data meets the story. Posted as the work evolves.</p>
+  <div class="gold-divider"></div>
+
+  <!-- ── FOUNDING POST ── -->
+  <article class="post-featured">
+    <div class="post-meta">
+      <span class="post-tag founding">Founding Post</span>
+      <span class="post-date">March 2026</span>
+    </div>
+
+    <h2 class="post-title">The Convergence Project: What It Is, Why It Exists, and What We're Building Together</h2>
+
+    <p class="post-excerpt">
+      Here's the hard truth: where we are right now is not one person's fault. These crises were not accidental. They were <strong>manuFRACTURED</strong> — manufactured on the surface, fractured at the foundation, and handed to us piece by piece so we'd never see the whole shape of the thing. The whole shape is now visible. And you deserve to see it.
+    </p>
+
+    <button class="read-toggle" onclick="togglePost(this)" aria-expanded="false">
+      <span>Read Full Post</span>
+      <span class="arrow">▾</span>
+    </button>
+
+    <div class="post-body" style="display:none">
+
+      <h2>What This Is</h2>
+      <p>The Convergence Project is a free, publicly available Civic Research Library built for everyday people. Not academics. Not politicians. Not think tanks with agendas. People. It houses interactive research decks pulling from real, publicly sourced data — covering water, energy, space weather, basic needs, systemic root causes, the war economy, the American family, and much more — with new decks added as the research grows. The goal is simple: give you the clearest, most honest picture of where we are as a nation, grounded in facts, history, science, and patterns. No spin. No agenda. Just receipts.</p>
+
+      <h2>Why It Exists</h2>
+      <p>Here's the hard truth: where we are right now is not one person's fault. It's not one party's fault. It's not one generation's fault. And it is absolutely not reducible to race, though race has been used — masterfully and deliberately — as a distraction from the larger machinery at work.</p>
+      <p>What we are living through is the result of decades of unchecked power, collective inattention, and systems that were sold to us as separate problems. The economy. The environment. Public health. Education. Housing. Food security. We were told these were different conversations happening in different rooms. They were never in different rooms. They were always the same room — and the door was locked from the outside.</p>
+      <div class="pull-quote">These crises were not accidental. They were manuFRACTURED. Manufactured on the surface, fractured at the foundation, and handed to us piece by piece so we'd never see the whole shape of the thing.</div>
+      <p>The Convergence Project exists because the whole shape is now visible. And you deserve to see it.</p>
+
+      <h2>This Is For the Youth First</h2>
+      <p>Because everything else is secondary if we lose them to the noise.</p>
+      <p>They are growing up in the most data-saturated environment in human history and simultaneously being handed the least context for what any of it means. That is not an accident either.</p>
+      <p>For the home educators, the deep thinkers, the ones who read everything and got called crazy for connecting dots out loud — this is for you too. You were not wrong. You were early. And the young people in your lives deserve the receipts to back up what you already knew.</p>
+      <p><em>We got misled. They don't have to be.</em></p>
+
+      <h2>How It Works and How You Can Use It</h2>
+      <p>Each research deck is designed to be a standalone deep dive — readable in one sitting, sharable, and applicable. You don't need a degree to use this. You need curiosity and a willingness to look.</p>
+      <p><strong>Students and educators</strong> — both traditional and home-based — can use the decks as real civic curriculum. Not textbook sanitized history. Actual data alongside actual events to build the kind of critical thinking this generation needs more than any before it.</p>
+      <p><strong>Community organizations and advocates</strong> can use the pattern data to strengthen cases for local policy reform — with sources attached.</p>
+      <p><strong>Business owners and entrepreneurs</strong> can use the economic and systems data to understand the larger forces shaping their markets, supply chains, and communities.</p>
+      <p><strong>Government agencies and reform advocates</strong> can use this as a mirror — an honest, data-backed reflection of where policy has drifted from its original purpose, and where rebuilding is not only possible but necessary.</p>
+      <p>Old policies that once served as lifelines can be rebuilt. Not restored — <em>rebuilt</em>. Differently. Better. With the clarity that only comes from understanding how we got here. That is still possible. The data says so.</p>
+
+      <h2>How This Was Built and Where It's Going</h2>
+      <p>I built this with the help of AI as a research and development tool — specifically for synthesizing data, building the interactive decks, and helping me organize years of accumulated research into something accessible. I'll be transparent: my current AI subscription runs through May of this year. After that, I will need technical support to keep this growing.</p>
+      <p>That means I am actively looking for:</p>
+      <p><strong>IT professionals, web developers, and engineers</strong> who want to volunteer their skills toward a civic project that matters.</p>
+      <p><strong>Researchers and data analysts</strong> who can help verify, update, and expand the data decks over time.</p>
+      <p><strong>Educators, organizers, and community leaders</strong> who want to collaborate on how this material gets used in real spaces.</p>
+
+      <div class="contact-block">
+        <p>If you have data to contribute, a correction to flag, or want to get involved in any capacity — email directly at <span class="email-reveal"></span></p>
+        <p>All submissions will be reviewed and sourced properly before anything is added to the library.</p>
+      </div>
+
+      <p>A full Source Bucket — all sourced materials and hyperlinked references organized by deck — is now live on this page. For my fact-checkers and skeptics: good. Scrutiny is welcome here. That's the whole point.</p>
+      <p>I also intend to create virtual and in-person spaces — structured conversations where we can sit with this data together, ask hard questions, and start building the kind of organized, informed response this moment is asking for. More on that as it develops.</p>
+
+      <h2>The Invitation</h2>
+      <p>I have been saying these things through poetry for years. The urgency you hear in my work — this is where it comes from. Now I'm handing you the source material.</p>
+      <p>This is not a political project. This is a clarity project. The data doesn't belong to any party. It belongs to all of us. And what we choose to do with it — that's still ours to decide.</p>
+      <p>We can change. The patterns say we've done it before. The question is whether we want to badly enough, and whether we're willing to look honestly at what we built in the first place.</p>
+      <div class="pull-quote">The Convergence Project is a reminder that we can. And for the next generation — it's proof that someone saw it coming, told the truth about it, and left a light on.</div>
+      <p><em>We got misled. They don't have to be.</em></p>
+      <p>Save it. Share it. Use it.</p>
+
+      <div class="sign-off">
+        — Impact Poet, Ms. JuruDaWise<br>
+        Founder, The Convergence Project<br>
+        Under Ebony Enterprises 9 LLC
+        <div class="hashtags">#FreeMindz &nbsp;#TheConvergenceProject &nbsp;#CivicResearch &nbsp;#ForThePeople &nbsp;#ForTheYouth</div>
+      </div>
+
+    </div><!-- /post-body -->
+  </article>
+
+  <!-- ── ON THE HORIZON ── -->
+  <p class="section-eyebrow" style="margin-top:56px;">On the horizon</p>
+  <div class="posts-grid">
+
+    <a class="post-card live" href="sources.html">
+      <p class="post-card-title">Source Bucket</p>
+      <p class="post-card-desc">All sources organized by series and deck — with direct Fact Check links on every key data point.</p>
+    </a>
+
+    <a class="post-card live" href="#how-to">
+      <p class="post-card-title">How to Read a Research Deck</p>
+      <p class="post-card-desc">A practical guide for educators, organizers, and first-time visitors to the library.</p>
+    </a>
+
+    <a class="post-card live" href="#contributor">
+      <p class="post-card-title">Contributor Spaces</p>
+      <p class="post-card-desc">How to volunteer, submit data, flag errors, and help build this library with the community.</p>
+    </a>
+
+    <div class="post-card upcoming">
+      <p class="post-card-title">America's Health</p>
+      <p class="post-card-desc">The data on healthcare access, insurance, pharmaceutical pricing, and what the U.S. gets for its spend vs. peer nations.</p>
+    </div>
+
+    <div class="post-card upcoming">
+      <p class="post-card-title">American Politics</p>
+      <p class="post-card-desc">Campaign finance, voter suppression, gerrymandering, and the machinery behind who actually holds power.</p>
+    </div>
+
+    <div class="post-card upcoming">
+      <p class="post-card-title">The LGBTQ+ Deck</p>
+      <p class="post-card-desc">Rights, data, health outcomes, identity, and the legislative landscape — balanced, sourced, and undismissable.</p>
+    </div>
+
+  </div>
+
+  <!-- ── SOURCE BUCKET ── -->
+  <div class="info-section" style="margin-top:64px;">
+    <h3 class="info-section-title" id="source-bucket">📂 Source Bucket</h3>
+    <p>Every data point used in every deck is sourced, hyperlinked, and organized by series in the Source Bucket. This is the receipts room. If a stat sounds too alarming to be real — go check it. That's the whole point of building this.</p>
+    <p>The Source Bucket is organized by Vol → Series → Deck → data point, in the order each appears in the presentation. Contested areas are clearly flagged so you know where the science is still being debated.</p>
+    <a href="sources.html" class="contributor-btn" style="margin-top:8px;">Open the Source Bucket →</a>
+  </div>
+
+  <!-- ── HOW TO USE A RESEARCH DECK ── -->
+  <div class="info-section" id="how-to">
+    <h3 class="info-section-title">📖 How to Read a Research Deck</h3>
+    <p>These decks are designed to be accessible — not academic. Here's how to get the most out of them whether you're opening one alone, in a classroom, or in a community meeting.</p>
+    <ol class="info-steps">
+      <li data-step="01">Start with the hero stat at the top. That number sets the stakes for what you're about to see. Let it land before you scroll.</li>
+      <li data-step="02">Read each section label — they tell you the angle of that section so you know what lens is being applied to the data.</li>
+      <li data-step="03">When you see a callout box (gold border, italic text), that's the most important takeaway from that section. Don't skip those.</li>
+      <li data-step="04">The charts are interactive on desktop — hover over data points for exact values. On mobile, read the chart title and the axis labels.</li>
+      <li data-step="05">Check the "What Improved / What Declined" sections. Every deck shows both sides. Progress is real and it matters as much as the damage.</li>
+      <li data-step="06">Hit the Source Bucket for any stat that surprises you. Every number links directly to the original government database, peer-reviewed paper, or nonpartisan institution it came from.</li>
+      <li data-step="07">Share the deck — not just this page. The link opens directly for anyone. That's the point. The more people see the full picture, the more pressure builds for real change.</li>
+    </ol>
+    <p><strong>For educators:</strong> Each deck works as a standalone lesson. Pair Deck 03 (Basic Needs) with a civics unit on policy failure. Pair Deck 11 (Arts & History) with a budget discussion. The data connects across decks — use the Source Bucket to assign independent research.</p>
+    <p><strong>For community organizers:</strong> The summary data tables at the bottom of each deck are designed to be used in presentations, grant applications, and reform proposals. The sources are all publicly verifiable.</p>
+  </div>
+
+  <!-- ── CONTRIBUTOR SECTION ── -->
+  <div class="info-section" id="contributor">
+    <h3 class="info-section-title">🤝 Contributor Space</h3>
+    <p>The Convergence Project is a community project. It was built by one person with AI tools, years of research, and a deep need to make the truth visible. It will grow with the community.</p>
+    <p>Here's what's needed and how you can help:</p>
+
+    <div class="contributor-grid">
+      <div class="contributor-box">
+        <h4>💻 Tech Volunteers</h4>
+        <p>Web developers, engineers, and IT professionals — help maintain, improve, and expand the site infrastructure. Especially needed as AI tools sunset in May 2026.</p>
+      </div>
+      <div class="contributor-box">
+        <h4>🔬 Research Contributors</h4>
+        <p>Data analysts, academics, researchers — submit sourced data, flag errors, and help verify and expand the decks. All submissions reviewed before publishing.</p>
+      </div>
+      <div class="contributor-box">
+        <h4>🏫 Educators & Organizers</h4>
+        <p>Teachers, community leaders, advocates — collaborate on how this material gets used in classrooms, community spaces, and policy conversations.</p>
+      </div>
+      <div class="contributor-box">
+        <h4>📣 Amplifiers</h4>
+        <p>Share the library. Post a deck. Put it in a group chat. Show it at a meeting. The most powerful thing you can do is put the data in front of someone who needs it.</p>
+      </div>
+    </div>
+
+    <p>To get involved, submit a correction, or propose a collaboration — reach out directly:</p>
+    <a href="#" class="contributor-btn email-btn" style="margin-right:12px;">Email the Project →</a>
+    <a href="https://buymeacoffee.com/impactpoetj" target="_blank" rel="noopener" class="contributor-btn outline">☕ Buy Me a Coffee</a>
+
+    <p style="margin-top:24px;font-size:0.9rem;color:rgba(240,230,208,0.45);">This is a free, publicly available civic research library. No paywalls. No ads. No agenda. Just receipts. Every contribution — of time, skills, data, or coffee — keeps it alive and growing.</p>
+  </div>
+
+  <!-- ── QUICK LINKS BAR ── -->
+  <div class="contribute-bar" style="margin-top:40px;">
+    <p>See a data error? Have something to add? Want to volunteer your skills? This library grows with the community.</p>
+    <a href="#" class="email-btn-bar">Get Involved →</a>
+  </div>
+
+  <!-- ── BUY ME A COFFEE ── -->
+  <div class="bmc-bar">
+    <div class="bmc-inner">
+      <span class="bmc-icon">☕</span>
+      <div class="bmc-text">
+        <p class="bmc-headline">If this project has value to you, consider buying me a coffee.</p>
+        <p class="bmc-sub">Every contribution helps keep the library growing, the research flowing, and the lights on.</p>
+      </div>
+      <a class="bmc-btn" href="https://buymeacoffee.com/impactpoetj" target="_blank" rel="noopener">
+        Support the Work →
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  // ── EMAIL PROTECTION (Cloudflare-proof) ──
+  // Split into parts so no bot or proxy can intercept
+  var u = 'jaeeezy';
+  var d = 'pm.me';
+  var email = u + '\u0040' + d;
+  var href = 'mailto:' + email;
+
+  // Fill in all email reveal spans
+  var reveals = document.querySelectorAll('.email-reveal');
+  reveals.forEach(function(el) {
+    var a = document.createElement('a');
+    a.href = href;
+    a.textContent = email;
+    a.style.color = 'var(--gold)';
+    a.style.borderBottom = '1px solid var(--gold-dim)';
+    el.appendChild(a);
+  });
+
+  // Fill email buttons
+  document.querySelectorAll('.email-btn, .email-btn-bar').forEach(function(el) {
+    el.href = href;
+  });
+
+  // ── POST TOGGLE ──
+  function togglePost(btn) {
+    var body = btn.nextElementSibling;
+    var isOpen = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    btn.classList.toggle('open', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    btn.querySelector('span').textContent = isOpen ? 'Read Full Post' : 'Collapse Post';
+  }
+</script>
+
+</body>
+</html>

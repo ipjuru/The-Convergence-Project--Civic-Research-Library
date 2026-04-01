@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Deck 1: Thirst & Power — A Spoken Space</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96A;--olive:#6B7C47;--tan:#C2A87E;
+  --brown:#5C3D2E;--black:#0D0D0D;--b2:#141414;--b3:#1C1C1C;
+  --cream:#F0EAD6;--red:#9B2C2C;--accent:#4A90C4;--muted:#666;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--black);color:var(--cream);font-family:'Raleway',sans-serif;overflow:hidden;}
+#ss{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:44px 28px 88px;opacity:0;transform:translateX(70px);transition:opacity .5s,transform .5s;pointer-events:none;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.out{opacity:0;transform:translateX(-70px);}
+#pb{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .4s;z-index:200;}
+#ct{position:fixed;top:14px;right:18px;font-size:10px;letter-spacing:3px;color:var(--muted);z-index:200;text-transform:uppercase;}
+#nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;z-index:200;}
+.nb{width:42px;height:42px;border-radius:50%;border:1px solid var(--brown);background:rgba(14,14,14,.95);color:var(--tan);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.nb:hover{border-color:var(--accent);color:var(--accent);}
+.nb:disabled{opacity:.2;cursor:default;}
+#dots{display:flex;gap:6px;align-items:center;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--brown);cursor:pointer;transition:all .3s;}
+.dot.active{background:var(--accent);width:18px;border-radius:3px;}
+.ey{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.st{font-family:'Cinzel',serif;font-size:clamp(18px,3.5vw,30px);font-weight:700;line-height:1.2;color:var(--gold);}
+.ss{font-family:'Crimson Text',serif;font-size:clamp(13px,1.8vw,15px);color:var(--tan);line-height:1.65;margin-top:6px;}
+.dv{width:36px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);margin:8px 0;}
+.si{width:100%;max-width:820px;display:flex;flex-direction:column;gap:14px;}
+.cw{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:14px;}
+canvas{max-height:240px!important;}
+.ca{padding:12px 16px;border-radius:6px;border-left:3px solid var(--accent);background:var(--b3);font-size:clamp(11px,1.6vw,13px);line-height:1.6;color:var(--cream);}
+.ca.red{border-left-color:var(--red);}
+.ca.gold{border-left-color:var(--gold);}
+.ca strong{color:var(--accent);}
+.ca.red strong{color:#E05252;}
+.ca.gold strong{color:var(--gold);}
+.src{font-size:10px;color:#383838;font-style:italic;text-align:right;margin-top:2px;}
+/* title slide */
+#s0{text-align:center;}
+#s0::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 40%,rgba(74,144,196,.07) 0%,transparent 70%);pointer-events:none;}
+.mt{font-family:'Cinzel',serif;font-size:clamp(36px,8vw,80px);font-weight:900;color:var(--accent);line-height:.9;text-shadow:0 0 60px rgba(74,144,196,.2);}
+.mt span{color:var(--gold);display:block;font-size:.55em;margin-top:8px;}
+.sc{font-family:'Crimson Text',serif;font-style:italic;font-size:clamp(13px,2vw,17px);color:var(--tan);max-width:500px;margin:22px auto 0;line-height:1.7;}
+.sc strong{color:var(--gold-l);font-style:normal;}
+.bf{position:absolute;bottom:90px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--brown);}
+/* action slide */
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;width:100%;max-width:820px;}
+.ac{background:var(--b2);border:1px solid #252525;border-radius:8px;padding:16px;transition:border-color .2s;}
+.ac:hover{border-color:var(--accent);}
+.at{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.ah{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin-bottom:8px;}
+.al{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.al li{font-size:12px;color:var(--tan);padding-left:14px;position:relative;line-height:1.4;}
+.al li::before{content:'→';position:absolute;left:0;color:var(--olive);font-size:11px;}
+/* closing */
+#s12{text-align:center;}
+.cq{font-family:'Cinzel',serif;font-size:clamp(16px,3.5vw,26px);color:var(--gold);max-width:560px;line-height:1.4;margin:0 auto 20px;}
+.cb{font-family:'Crimson Text',serif;font-style:italic;font-size:clamp(13px,1.8vw,16px);color:var(--tan);max-width:460px;line-height:1.7;margin:0 auto 24px;}
+.cc{display:inline-block;padding:11px 28px;border:1px solid var(--accent);border-radius:2px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:all .2s;}
+.cc:hover{background:var(--accent);color:var(--black);}
+@media(max-width:600px){.slide{padding:20px 14px 88px;}canvas{max-height:180px!important;}.ag{grid-template-columns:1fr;}.si{gap:10px;}}
+@media(max-height:620px){canvas{max-height:150px!important;}.slide{padding:16px 16px 80px;}.si{gap:8px;}}
+</style>
+</head>
+<body>
+<div id="pb"></div>
+<div id="ct">1 / 13</div>
+<div id="ss">
+
+<!-- S0: TITLE -->
+<div class="slide active" id="s0">
+  <p class="ey" style="position:relative;">A Spoken Space — Research Series Vol. 2 · Deck 1 of 4</p>
+  <h1 class="mt">THIRST<br>&amp;<br>POWER<span>The AI Data Center Crisis</span></h1>
+  <p class="sc">Every time you ask an AI a question, somewhere a machine drinks your water and spikes your electric bill.<br><strong>The receipts are here.</strong></p>
+  <p class="bf">Impact Poet · Ms. JuruDaWise · impactpoet.carrd.co</p>
+</div>
+
+<!-- S1: THE APPETITE -->
+<div class="slide" id="s1">
+  <div class="si">
+    <div><p class="ey">Chapter 1</p><h2 class="st">The Energy Appetite Is Doubling</h2><div class="dv"></div>
+    <p class="ss">Global data center electricity consumption hit 415 TWh in 2024. By 2030, it's projected to more than double — matching Japan's entire national power use. AI is the primary engine of this surge.</p></div>
+    <div class="cw"><canvas id="c1"></canvas></div>
+    <div class="ca gold"><strong>Goldman Sachs says</strong> data center power demand will surge <strong>165%</strong> by 2030 vs. 2023. The U.S. alone goes from 180 TWh to 430 TWh — a <strong>130% jump</strong> in six years.</div>
+    <p class="src">Sources: IEA "Energy and AI" 2025 · Goldman Sachs · Lawrence Berkeley National Lab</p>
+  </div>
+</div>
+
+<!-- S2: YOUR BILL -->
+<div class="slide" id="s2">
+  <div class="si">
+    <div><p class="ey">Chapter 2</p><h2 class="st">Your Electric Bill Is Going Up — Because of AI</h2><div class="dv"></div>
+    <p class="ss">Residential electricity rates rose 46% since 2019 and hit 19 cents/kWh nationally by end of 2025. In states with the highest data center density, rate hikes are far worse — and accelerating.</p></div>
+    <div class="cw"><canvas id="c2"></canvas></div>
+    <div class="ca red"><strong>In Virginia</strong> — the world's data center capital — wholesale electricity costs rose <strong>up to 267%</strong> near data center clusters. Residential bills could rise <strong>25–75%</strong> by decade's end. The PJM grid serving <strong>67 million people</strong> across 13 states has already failed to procure sufficient capacity for the first time in its history.</div>
+    <p class="src">Sources: EIA · NRDC · Jack Kemp Foundation · PJM Interconnection 2025</p>
+  </div>
+</div>
+
+<!-- S3: WATER -->
+<div class="slide" id="s3">
+  <div class="si">
+    <div><p class="ey">Chapter 3</p><h2 class="st">They're Drinking the Water Too</h2><div class="dv"></div>
+    <p class="ss">A typical large data center uses 3–5 million gallons of water per day — equivalent to a city of 50,000 people. And they're building them in the driest places in the country.</p></div>
+    <div class="cw"><canvas id="c3"></canvas></div>
+    <div class="ca"><strong>Over 32%</strong> of U.S. data centers sit in high or extremely high water stress areas. <strong>Two-thirds</strong> of data centers built since 2022 are in drought-prone regions. U.S. data centers directly consumed <strong>17 billion gallons</strong> in 2023 — plus 211 billion gallons indirectly through electricity generation.</div>
+    <p class="src">Sources: Ceres "Drained by Data" · Bloomberg · Lawrence Berkeley National Lab · IEA</p>
+  </div>
+</div>
+
+<!-- S4: CORPORATE WATER -->
+<div class="slide" id="s4">
+  <div class="si">
+    <div><p class="ey">Chapter 4</p><h2 class="st">Big Tech's Individual Water Tab</h2><div class="dv"></div>
+    <p class="ss">These companies disclose water use reluctantly. What they do reveal is staggering — and most of it evaporates, meaning it never returns to local supplies.</p></div>
+    <div class="cw"><canvas id="c4"></canvas></div>
+    <div class="ca gold"><strong>Google's Council Bluffs, Iowa</strong> facility alone consumed <strong>1 billion gallons</strong> in one year — enough to supply all Iowa residential water for five days. Microsoft's water use rose <strong>34% year-over-year</strong>, with <strong>42%</strong> drawn from water-stressed areas.</div>
+    <p class="src">Sources: Google Environmental Report · Microsoft ESG Report · Meta Sustainability Report · Amazon 2023</p>
+  </div>
+</div>
+
+<!-- S5: CAPEX -->
+<div class="slide" id="s5">
+  <div class="si">
+    <div><p class="ey">Chapter 5</p><h2 class="st">$380 Billion Spent in One Year</h2><div class="dv"></div>
+    <p class="ss">In 2025 alone, the Big Four tech companies committed over $380 billion to infrastructure — mostly AI data centers. That's more than twice what the entire U.S. electric utility industry invests in a year.</p></div>
+    <div class="cw"><canvas id="c5"></canvas></div>
+    <div class="ca red"><strong>For context:</strong> the U.S. electric utility industry invested approximately <strong>$160 billion</strong> in all generation, transmission, and distribution in 2024. Big Tech is outspending the energy sector on energy-adjacent infrastructure <strong>by a factor of 2.</strong></div>
+    <p class="src">Sources: CNBC · CreditSights · company Q4 2025 earnings filings</p>
+  </div>
+</div>
+
+<!-- S6: GRID CRISIS -->
+<div class="slide" id="s6">
+  <div class="si">
+    <div><p class="ey">Chapter 6</p><h2 class="st">The Grid Is Already Cracking</h2><div class="dv"></div>
+    <p class="ss">The PJM Interconnection's capacity auction prices — the mechanism that keeps the lights on for 67 million Americans — have skyrocketed in three years. The grid is not keeping up with demand.</p></div>
+    <div class="cw"><canvas id="c6"></canvas></div>
+    <div class="ca red"><strong>By June 2027</strong>, PJM projects it may fall below reliability standards — meaning rolling blackouts during heat waves or storms are a real risk. PJM's own market monitor testified that this crisis is <strong>"almost entirely the result of large data center load additions."</strong></div>
+    <p class="src">Sources: PJM Interconnection · NRDC · Utility Dive · Belfer Center Feb 2026</p>
+  </div>
+</div>
+
+<!-- S7: JOBS LIE -->
+<div class="slide" id="s7">
+  <div class="si">
+    <div><p class="ey">Chapter 7</p><h2 class="st">The Jobs Promise vs. Reality</h2><div class="dv"></div>
+    <p class="ss">States give away hundreds of millions in tax breaks to attract data centers. The permanent jobs rarely match the hype. The U.S. Chamber of Commerce's own data tells the story.</p></div>
+    <div class="cw"><canvas id="c7"></canvas></div>
+    <div class="ca gold"><strong>Meta's Louisiana data center</strong> — costing a potential $27 billion — will sit in a parish where 25% of people live below the poverty line. It needs electricity <strong>twice the peak output of New Orleans</strong>. Louisiana granted 20-year tax exemptions with a minimum requirement of just 50 jobs. Meanwhile, locals will pay for <strong>$3.2 billion in new gas power plants</strong> through their utility bills.</div>
+    <p class="src">Sources: WIRED · Louisiana Illuminator · CNBC · U.S. Chamber of Commerce</p>
+  </div>
+</div>
+
+<!-- S8: WHO PAYS -->
+<div class="slide" id="s8">
+  <div class="si">
+    <div><p class="ey">Chapter 8</p><h2 class="st">Who Pays for All of This?</h2><div class="dv"></div>
+    <p class="ss">The answer is you. Through utility bills. Through taxes. Through water you can no longer afford or access. The gap between what data centers cost communities and what they return is not accidental — it's the model.</p></div>
+    <div class="cw"><canvas id="c8"></canvas></div>
+    <div class="ca red"><strong>PJM consumers</strong> face an estimated <strong>$100 billion in extra costs through 2033</strong>, translating to roughly $70/month extra per household by 2028. <strong>7 qualifying Indiana data center projects</strong> may yield $150M to $900M in forgone state revenue — money that would have funded schools and roads. <strong>25 of 31 Virginia communities</strong> with data centers had <strong>nondisclosure agreements</strong> with local officials before they knew what was coming.</div>
+    <p class="src">Sources: NRDC · Mirror Indy · University of Mary Washington · CNBC</p>
+  </div>
+</div>
+
+<!-- S9: WHAT YOU CAN DO -->
+<div class="slide" id="s9">
+  <div class="si" style="max-width:860px;">
+    <div><p class="ey">Chapter 9</p><h2 class="st">What You Can Actually Do</h2><div class="dv"></div>
+    <p class="ss">Alarm without action is just anxiety. Here's where your power is real.</p></div>
+    <div class="ag">
+      <div class="ac">
+        <p class="at">At Home</p><p class="ah">Lower Your Exposure</p>
+        <ul class="al">
+          <li>Switch to a local electric cooperative — they're nonprofits that return profits to members</li>
+          <li>Join or form community solar co-ops in your area</li>
+          <li>Push your utility company to disclose how much power goes to data centers</li>
+          <li>Collect rainwater where legal — it's a start</li>
+        </ul>
+      </div>
+      <div class="ac">
+        <p class="at">In Your Community</p><p class="ah">Organize</p>
+        <ul class="al">
+          <li>Attend city council meetings when data center projects are proposed — those rooms are empty and powerful</li>
+          <li>Demand environmental impact assessments include water and electricity projections</li>
+          <li>Support local journalism covering these deals</li>
+          <li>Connect with Food & Water Watch local chapters</li>
+        </ul>
+      </div>
+      <div class="ac">
+        <p class="at">Big Picture</p><p class="ah">Follow the Money</p>
+        <ul class="al">
+          <li>Track your state's data center tax incentive deals — they're public record</li>
+          <li>Support legislation requiring data centers to pay for grid upgrades they cause</li>
+          <li>Demand water disclosure requirements — companies hide this data</li>
+          <li>Push for community benefit agreements before approvals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S10: CLOSING -->
+<div class="slide" id="s10" style="text-align:center;">
+  <p class="ey" style="margin-bottom:20px;">A Spoken Space — Off Mic Research Series</p>
+  <p class="cq">"They built a machine that learns everything<br>and drinks your water to do it."</p>
+  <p class="cb">This is Deck 1 of 4.<br>The next deck goes deeper — into something they really don't talk about.<br>The sun is involved. So is your heartbeat.</p>
+  <a class="cc" href="https://impactpoet.carrd.co" target="_blank">Enter The Space — impactpoet.carrd.co</a>
+  <p style="margin-top:28px;font-size:11px;letter-spacing:2px;color:var(--brown);text-transform:uppercase;">Off Mic Podcast · Episode 1 · April 1, 2026</p>
+</div>
+
+</div><!-- end ss -->
+
+<nav id="nav">
+  <button class="nb" id="bp" disabled>&#8592;</button>
+  <div id="dots"></div>
+  <button class="nb" id="bn">&#8594;</button>
+</nav>
+
+<script>
+const TOTAL=11;let cur=0,anim=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));dotsEl.appendChild(d);}
+function upd(){document.getElementById('pb').style.width=((cur+1)/TOTAL*100)+'%';document.getElementById('ct').textContent=(cur+1)+' / '+TOTAL;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));document.getElementById('bp').disabled=cur===0;document.getElementById('bn').disabled=cur===TOTAL-1;}
+function goTo(idx){if(anim||idx===cur||idx<0||idx>=TOTAL)return;anim=true;const o=document.getElementById('s'+cur),n=document.getElementById('s'+idx);o.classList.add('out');o.classList.remove('active');setTimeout(()=>{o.classList.remove('out');n.classList.add('active');cur=idx;upd();drawChart(cur);anim=false;},420);}
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')goTo(cur+1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')goTo(cur-1);});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goTo(dx<0?cur+1:cur-1);},{passive:true});
+const C={gold:'#C9A84C',olive:'#6B7C47',tan:'#C2A87E',brown:'#5C3D2E',red:'#9B2C2C',accent:'#4A90C4',grid:'rgba(255,255,255,0.06)',tick:'#888'};
+const base={responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:C.tick,font:{family:'Raleway',size:11},boxWidth:12}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.accent,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}},scales:{x:{grid:{color:C.grid},ticks:{color:C.tick,font:{family:'Raleway',size:10}}},y:{grid:{color:C.grid},ticks:{color:C.tick,font:{family:'Raleway',size:10}}}}};
+const charts={};
+function drawChart(idx){
+  if(charts[idx])return;
+  if(idx===1){charts[1]=new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['2020','2022','2024','2026 est','2028 est','2030 proj'],datasets:[{label:'Global Data Center TWh',data:[200,250,415,530,700,945],backgroundColor:C.accent,borderRadius:5},{label:'AI Share (TWh)',data:[0,10,65,140,280,472],backgroundColor:C.gold,borderRadius:5}]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'TWh'}}}}});}
+  if(idx===2){charts[2]=new Chart(document.getElementById('c2'),{type:'line',data:{labels:['2019','2020','2021','2022','2023','2024','2025','2030 proj'],datasets:[{label:'US Avg Residential Rate (¢/kWh)',data:[13.0,13.2,13.7,15.1,16.3,17.9,19.0,26.0],borderColor:C.red,backgroundColor:'rgba(155,44,44,.1)',borderWidth:2.5,fill:true,tension:.3,pointRadius:4,pointBackgroundColor:C.red}]},options:{...base,plugins:{...base.plugins,legend:{labels:{color:C.tick,font:{family:'Raleway',size:11}}}},scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'¢'}}}}});}
+  if(idx===3){charts[3]=new Chart(document.getElementById('c3'),{type:'bar',data:{labels:['Direct Use 2023','Indirect (electricity gen)','Projected 2028 (direct)','Texas alone 2030'],datasets:[{label:'Billions of gallons',data:[17,211,68,399],backgroundColor:[C.accent,C.red,C.gold,C.brown],borderRadius:5}]},options:{...base,indexAxis:'y',plugins:{...base.plugins,legend:{display:false}},scales:{x:{...base.scales.x,ticks:{...base.scales.x.ticks,callback:v=>v+'B gal'}},y:{...base.scales.y}}}});}
+  if(idx===4){charts[4]=new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Google 2023','Microsoft FY2023','Meta 2023','Amazon est 2023'],datasets:[{label:'Annual water use (billion gallons)',data:[6.4,1.69,0.813,1.5],backgroundColor:[C.accent,C.gold,C.red,C.olive],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}},scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'B gal'}}}}});}
+  if(idx===5){charts[5]=new Chart(document.getElementById('c5'),{type:'bar',data:{labels:['Amazon','Google','Microsoft','Meta'],datasets:[{label:'2024 CapEx ($B)',data:[85.8,52.5,44.5,39.2],backgroundColor:C.brown,borderRadius:5},{label:'2025 CapEx ($B)',data:[112,91,80,71],backgroundColor:C.accent,borderRadius:5}]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>'$'+v+'B'}}}}});}
+  if(idx===6){charts[6]=new Chart(document.getElementById('c6'),{type:'bar',data:{labels:['2024–25','2025–26','2026–27'],datasets:[{label:'PJM Capacity Auction Total ($B)',data:[2.2,14.7,16.1],backgroundColor:[C.olive,C.gold,C.red],borderRadius:5}]},options:{...base,plugins:{...base.plugins,legend:{display:false}},scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>'$'+v+'B'}}}}});}
+  if(idx===7){charts[7]=new Chart(document.getElementById('c7'),{type:'bar',data:{labels:['Construction Peak','Permanent Jobs'],datasets:[{label:'Jobs Promised',data:[5000,500],backgroundColor:C.accent,borderRadius:5},{label:'Jobs Legally Required',data:[0,50],backgroundColor:C.red,borderRadius:5},{label:'Industry Avg (permanent)',data:[1688,157],backgroundColor:C.brown,borderRadius:5}]},options:{...base}});}
+  if(idx===8){charts[8]=new Chart(document.getElementById('c8'),{type:'doughnut',data:{labels:['Extra consumer cost 2033 (PJM, $B)','Forgone Indiana tax revenue ($B, upper)','VA utility upgrade cost ($B)'],datasets:[{data:[100,0.9,6.7],backgroundColor:[C.red,C.brown,C.accent],borderColor:['#0D0D0D'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom',labels:{color:C.tick,font:{family:'Raleway',size:10},boxWidth:12}},tooltip:{backgroundColor:'#1C1C1C',borderColor:C.accent,borderWidth:1,titleColor:C.gold,bodyColor:'#F0EAD6',padding:10}}}});}
+}
+upd();
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid #1a1a1a;">
+  <a href="index.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">Library Home</a>
+  <a href="deck2-space-weather.html" style="font-family:sans-serif;font-size:11px;color:#C9A84C;text-decoration:none;border:1px solid #C9A84C;padding:8px 16px;margin:6px;display:inline-block;">Deck 02: Space Weather →</a>
+</div>
+<div style="max-width:900px;margin:0 auto;padding:0 24px 40px;">
+  <div style="border-top:1px solid #1a1a1a;padding-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px;">
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">📂 Source Bucket</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Every stat sourced and hyperlinked. <a href="sources.html" style="color:#C9A84C;text-decoration:none;">Open the Source Bucket →</a></p>
+    </div>
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">🔍 How to Fact Check</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Find this deck in the Source Bucket and click any ↗ Fact Check link — goes straight to the original source.</p>
+    </div>
+    <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:18px;">
+      <span style="font-family:sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;display:block;margin-bottom:8px;">⚠️ See an Error?</span>
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(240,234,214,0.6);line-height:1.6;">Flag it. Email <span class="err-email"></span> with the deck, stat, and your source.</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){var u='jaeeezy',d='pm\u002eme',e=u+'\u0040'+d;document.querySelectorAll('.err-email').forEach(function(el){var a=document.createElement('a');a.href='mailto:'+e;a.textContent=e;a.style.color='#C9A84C';el.appendChild(a);});})();
+</script>
+</body>
+</html>
